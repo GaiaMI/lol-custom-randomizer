@@ -1,0 +1,78 @@
+name: Update Riot data
+
+# Every day, checks for a new patch. New data is only published if the tests pass.
+on:
+  schedule:
+    - cron: '30 6 * * *'
+  workflow_dispatch:
+    inputs:
+      force:
+        description: Update even if the patch has not changed
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  actions: write
+  issues: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check for a new patch
+        id: check
+        run: |
+          latest=$(curl -fsS https://ddragon.leagueoflegends.com/api/versions.json | python -c "import json,sys;print(json.load(sys.stdin)[0])")
+          current=$(python -c "import json;print(json.load(open('data/champion_fr.json',encoding='utf-8'))['version'])")
+          echo "Current: $current, latest: $latest"
+          echo "version=$latest" >> "$GITHUB_OUTPUT"
+          if [ "$latest" != "$current" ] || [ "${{ inputs.force }}" = "true" ]; then
+            echo "update=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Download the data and rebuild
+        if: steps.check.outputs.update == 'true'
+        run: |
+          pip install pillow
+          python scripts/update_ddragon.py | tee update.log
+          python scripts/build.py
+          sed -i "s#<lastmod>.*</lastmod>#<lastmod>$(date +%F)</lastmod>#" dist/sitemap.xml
+      - uses: actions/setup-node@v4
+        if: steps.check.outputs.update == 'true'
+        with:
+          node-version: '22'
+      - name: Test the site
+        if: steps.check.outputs.update == 'true'
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+          node scripts/test.js
+      - name: Publish
+        if: steps.check.outputs.update == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.check.outputs.version }}
+        run: |
+          git config user.name "GaiaMI"
+          git config user.email "GaiaMI@users.noreply.github.com"
+          git add data dist
+          if git diff --cached --quiet; then
+            echo "Nothing to publish"
+          else
+            git commit -m "Update Riot data to $VERSION"
+            git push
+            gh workflow run pages.yml --ref main
+          fi
+      - name: Report a new champion
+        if: steps.check.outputs.update == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          line=$(grep "NOUVEAUX CHAMPIONS" update.log || true)
+          if [ -n "$line" ] && [ -z "$(gh issue list --state open --search 'New champion to add in:title' --json number --jq '.[0].number')" ]; then
+            gh issue create --title "New champion to add" --body "$line. Add it to data/roster.txt, then run scripts/update_ddragon.py and collect its counters."
+          fi

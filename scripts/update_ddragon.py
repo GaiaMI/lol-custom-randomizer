@@ -4,7 +4,7 @@
   data/icons.json         champion icons (96 px WebP, base64)
   data/builddata.json     items, boots, support and jungle items, runes, shards and summoner spells + icons
 
-Source: the GitHub mirror InFinity54/LoL_DDragon, updated after each patch.
+Source: Riot's official Data Dragon CDN. Run daily by .github/workflows/update-data.yml.
 Needs Python 3 and Pillow:  pip install pillow
 Usage (from the project root):  python scripts/update_ddragon.py
 Then run:  python scripts/build.py
@@ -25,7 +25,8 @@ except ImportError:
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 D = lambda *p: os.path.join(ROOT, *p)
-MIRROR = "https://raw.githubusercontent.com/InFinity54/LoL_DDragon/master"
+CDN = "https://ddragon.leagueoflegends.com/cdn"
+VER = None  # set by main()
 norm = lambda s: re.sub(r'[^a-z]', '', s.lower())
 
 
@@ -35,7 +36,7 @@ def get(url):
 
 
 def get_json(path):
-    return json.loads(get(f"{MIRROR}/latest/data/fr_FR/{path}").decode('utf-8'))
+    return json.loads(get(f"{CDN}/{VER}/data/fr_FR/{path}").decode('utf-8'))
 
 
 def webp_b64(png_bytes, size):
@@ -77,6 +78,8 @@ def fetch_en_names(version):
 
 
 def main():
+    global VER
+    VER = json.loads(get("https://ddragon.leagueoflegends.com/api/versions.json").decode('utf-8'))[0]
     print("Liste des champions…")
     champ = get_json("champion.json")
     json.dump(champ, open(D('data', 'champion_fr.json'), 'w', encoding='utf-8'), ensure_ascii=False)
@@ -98,7 +101,7 @@ def main():
         print("  NOUVEAUX CHAMPIONS à ajouter dans data/roster.txt :", new)
 
     print("Icônes des champions…")
-    pairs = [(v['id'], f"{MIRROR}/latest/img/champion/{champ['data'][v['id']]['image']['full']}") for v in idmap.values()]
+    pairs = [(v['id'], f"{CDN}/{VER}/img/champion/{champ['data'][v['id']]['image']['full']}") for v in idmap.values()]
     icons = fetch_icons(pairs, 96)
     json.dump(icons, open(D('data', 'icons.json'), 'w'))
     print("  ", len(icons), "icônes")
@@ -128,14 +131,14 @@ def main():
     sp = get_json("summoner.json")['data']
     spells = {v['id']: {"n": v['name']} for v in sp.values() if 'CLASSIC' in v['modes']}
 
-    pairs = [(f"i_{k}", f"{MIRROR}/latest/img/item/{k}.png") for k in list(items) + list(boots) + list(sup) + list(jg)]
+    pairs = [(f"i_{k}", f"{CDN}/{VER}/img/item/{k}.png") for k in list(items) + list(boots) + list(sup) + list(jg)]
     for t in trees:
-        pairs.append((f"r_{t['id']}", f"{MIRROR}/img/{t['ic']}"))
-        pairs += [(f"r_{x['id']}", f"{MIRROR}/img/{x['ic']}") for row in t['rows'] for x in row]
-    pairs += [(f"s_{s}", f"{MIRROR}/latest/img/spell/{s}.png") for s in spells]
+        pairs.append((f"r_{t['id']}", f"{CDN}/img/{t['ic']}"))
+        pairs += [(f"r_{x['id']}", f"{CDN}/img/{x['ic']}") for row in t['rows'] for x in row]
+    pairs += [(f"s_{s}", f"{CDN}/{VER}/img/spell/{s}.png") for s in spells]
     for f in ['StatModsAdaptiveForceIcon', 'StatModsAttackSpeedIcon', 'StatModsCDRScalingIcon', 'StatModsMovementSpeedIcon',
               'StatModsHealthScalingIcon', 'StatModsHealthPlusIcon', 'StatModsTenacityIcon']:
-        pairs.append((f"m_{f}", f"{MIRROR}/img/perk-images/StatMods/{f}.png"))
+        pairs.append((f"m_{f}", f"{CDN}/img/perk-images/StatMods/{f}.png"))
     bicons = fetch_icons(pairs, 64)
     json.dump({"items": items, "boots": boots, "sup": sup, "jg": jg, "trees": trees, "spells": spells, "icons": bicons},
               open(D('data', 'builddata.json'), 'w', encoding='utf-8'), ensure_ascii=False)

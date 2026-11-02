@@ -88,10 +88,12 @@ The name must be the champion's English name. `update_ddragon.py` links it to th
 
 ## Update after a patch
 
-1. Run `python scripts/update_ddragon.py`. It fetches the new version and reports any new champion missing from `roster.txt`.
-2. Add the new champions to `data/roster.txt`, then run `update_ddragon.py` again to get their icons.
-3. Update the counters if you want numbers from the new patch (see `docs/COUNTERS.md`). A new champion needs its own counters, otherwise it only shows up in the counters of other champions.
-4. Run `python scripts/build.py`, then `node scripts/test.js`.
+`.github/workflows/update-data.yml` runs every day. When Riot publishes a new patch, it downloads the data, rebuilds the site and runs the tests. If they pass, it publishes the update. If they fail, nothing changes and GitHub reports a failed run. To run it by hand, open the Actions tab, choose "Update Riot data" and click "Run workflow".
+
+Two things stay manual:
+
+1. **New champions**: the run opens an issue. Add the champion to `data/roster.txt`, then run `python scripts/update_ddragon.py` to get its icon. It also needs its own counters, otherwise it only shows up in the counters of other champions.
+2. **Counters**: they stay on their own patch until they are collected again (see `docs/COUNTERS.md`). Then update the patch shown in the footer and in the counter panel in `src/template.html`.
 
 ## How it works
 
@@ -135,7 +137,7 @@ The current draw (placed teams and drawn champions) is not saved: it disappears 
 
 ## Data sources
 
-- Champions, icons, items, runes, spells: Riot Games Data Dragon, through the GitHub mirror `InFinity54/LoL_DDragon`. English names come straight from Data Dragon.
+- Champions, icons, items, runes, spells: Riot Games Data Dragon.
 - Counters: LoLalytics, patch 26.21 (16.21 in their numbering), Emerald and above.
 
 League of Legends and its content are the property of Riot Games. This project is a fan tool, not affiliated with Riot.

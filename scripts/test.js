@@ -173,6 +173,13 @@ const { chromium } = require('playwright');
   await page.check('#oBuild');
   await page.click('#drawRest');
   await page.waitForFunction(() => !busy);
+  // rerolling one team leaves the other team and the kept champions alone
+  const rrBefore = await page.evaluate(() => { T.red[0].locked = true; return JSON.stringify([T.blue.map(s => s.champ), T.red[0].champ]); });
+  await page.click('.team.red .teamRoll');
+  await page.waitForFunction(() => !busy);
+  const rrAfter = await page.evaluate(() => ({ same: JSON.stringify([T.blue.map(s => s.champ), T.red[0].champ]), full: T.red.every(s => s.champ) }));
+  if (rrAfter.same !== rrBefore || !rrAfter.full) fail('relance d\'une seule équipe');
+  await page.evaluate(() => { T.red[0].locked = false; updateNext(); });
   const frBefore = await page.locator('.teams').innerText();
   await page.click('#lang [data-l="en"]');
   const FRENCH = /[éèêàçùîôœ«»]|\b(le|la|les|des|du|une|un|et|ou|pour|joueur|joueurs|équipe|poste|tirer|tirage|proies?)\b/i;

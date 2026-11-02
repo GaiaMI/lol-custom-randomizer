@@ -1,0 +1,11 @@
+{
+  "name": "lol-custom-randomizer",
+  "private": true,
+  "scripts": {
+    "build": "python scripts/build.py",
+    "test": "node scripts/test.js"
+  },
+  "devDependencies": {
+    "playwright": "^1.50.0"
+  }
+}

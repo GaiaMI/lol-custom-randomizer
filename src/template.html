@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LoL Random Team &amp; Champion Generator | lol-custom-randomizer</title>
+<link rel="canonical" href="https://gaiami.github.io/lol-custom-randomizer/">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-48.png" sizes="48x48" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="description" content="Free League of Legends custom game randomizer: random balanced 5v5 teams, Flex stacks, roles, champions, counters and builds. No sign-up, in English and French.">
+<meta name="theme-color" content="#ffd23f">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="lol-custom-randomizer">
+<meta property="og:title" content="lol-custom-randomizer: random LoL teams, roles and champions">
+<meta property="og:description" content="Free League of Legends custom game randomizer: random balanced 5v5 teams, Flex stacks, roles, champions, counters and builds. No sign-up, in English and French.">
+<meta property="og:url" content="https://gaiami.github.io/lol-custom-randomizer/">
+<meta property="og:image" content="https://gaiami.github.io/lol-custom-randomizer/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="lol-custom-randomizer draw screen with the champion reel">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"lol-custom-randomizer","alternateName":"Rift Randomizer","url":"https://gaiami.github.io/lol-custom-randomizer/","image":"https://gaiami.github.io/lol-custom-randomizer/og.jpg","description":"Free League of Legends custom game randomizer: random balanced 5v5 teams, Flex stacks, roles, champions, counters and builds. No sign-up, in English and French.","applicationCategory":"GameApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","inLanguage":["en","fr"],"isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"author":{"@type":"Person","name":"TLNP Mehlo","url":"https://x.com/Mehlomw"},"featureList":["Random balanced 5v5 teams by rank","Five-player Flex draw","Random roles and champions","Counter and prey picks from LoLalytics matchups","Random builds and runes with shareable links","Forced roles and champion types per player"]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#121426; --slab:#1a1d34; --slab2:#232745; --line:#2f3459; --txt:#eef0ff; --mute:#99a0c4;
+  --blue:#4aa3ff; --blue-d:#173462; --red:#ff5468; --red-d:#5a1a26; --hi:#ffd23f; --win:#4fd69c; --lose:#ff7a7a;
+  --disp:"Bricolage Grotesque",system-ui,sans-serif; --body:Figtree,system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--ink);color:var(--txt);font:15px/1.45 var(--body)}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--hi);outline-offset:2px}
+.wrap{max-width:1200px;margin:0 auto;padding:22px 18px 70px}
+
+/* header */
+.top{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.brand{font:800 clamp(30px,4.5vw,46px)/.9 var(--disp);letter-spacing:-.02em;margin:0;display:flex;align-items:center;gap:14px}
+.logo{width:clamp(46px,6vw,60px);height:clamp(46px,6vw,60px);flex:none}
+.brand small{display:block;font:500 14px/1.4 var(--body);letter-spacing:0;color:var(--mute);margin-top:8px}
+.facts{display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px;color:var(--mute);font-size:13px}
+.facts b{color:var(--txt);font-weight:600}
+.facts button{background:none;border:0;padding:0;color:inherit;text-decoration:underline dotted;text-underline-offset:3px}
+.tabs{display:flex;gap:4px;margin:22px 0 14px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.tabs button{background:none;border:0;padding:10px 14px 12px;font:600 15px var(--body);color:var(--mute);border-bottom:3px solid transparent;margin-bottom:-1px}
+.tabs button[aria-selected=true]{color:var(--txt);border-color:var(--hi)}
+
+/* reel stage: the one loud element */
+.stage{position:relative;border-radius:18px;background:
+  radial-gradient(600px 200px at 50% 0%,rgba(255,210,63,.10),transparent 70%),var(--slab);
+  border:1px solid var(--line);padding:10px 0 16px;overflow:hidden;margin-bottom:18px}
+.stage-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:0 12px 8px;position:relative;z-index:2;min-height:34px}
+.reel{position:relative;height:112px;overflow:hidden;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 18%,#000 82%,transparent);mask-image:linear-gradient(90deg,transparent,#000 18%,#000 82%,transparent)}
+.strip{position:absolute;left:0;top:8px;display:flex;gap:10px;will-change:transform}
+.cell{width:96px;height:96px;border-radius:14px;overflow:hidden;flex:none;background:var(--slab2);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+.cell img{width:100%;height:100%;display:block}
+.marker{position:absolute;left:50%;top:0;bottom:0;width:108px;transform:translateX(-50%);border:3px solid var(--hi);border-radius:18px;pointer-events:none;box-shadow:0 0 30px rgba(255,210,63,.25),inset 0 0 20px rgba(255,210,63,.15)}
+.marker::before,.marker::after{content:"";position:absolute;left:50%;transform:translateX(-50%);border:8px solid transparent}
+.marker::before{top:-3px;border-top-color:var(--hi)}
+.marker::after{bottom:-3px;border-bottom-color:var(--hi)}
+.stage.idle .strip{opacity:.35}
+.stage.pinned{position:sticky;top:8px;z-index:4;box-shadow:0 18px 40px rgba(5,6,16,.7)}
+.slot{scroll-margin-top:300px;scroll-margin-bottom:20px}
+.stage.won .marker{animation:flash .6s ease}
+@keyframes flash{0%{box-shadow:0 0 0 rgba(255,210,63,0)}40%{box-shadow:0 0 60px rgba(255,210,63,.7),inset 0 0 30px rgba(255,210,63,.4)}100%{box-shadow:0 0 30px rgba(255,210,63,.25),inset 0 0 20px rgba(255,210,63,.15)}}
+.verdict{text-align:center;padding:12px 16px 0;min-height:76px}
+.verdict .ctx{font-size:13px;color:var(--mute)}
+.verdict .ctx .bl{color:var(--blue);font-weight:600}.verdict .ctx .rd{color:var(--red);font-weight:600}
+.verdict .vt{font:800 clamp(26px,4vw,40px)/1.05 var(--disp);margin:4px 0 2px;letter-spacing:-.01em}
+.verdict .sub{font-size:13px;color:var(--mute)}
+.stage-ctl{margin-left:auto;display:flex;gap:8px;align-items:center;font-size:12px;color:var(--mute)}
+.stage-ctl select{background:var(--slab2);border:1px solid var(--line);border-radius:8px;padding:3px 6px;font-size:12px}
+
+/* layout */
+.cols{display:grid;grid-template-columns:1fr 290px;gap:18px;align-items:start}
+.cols>*{min-width:0}
+@media(max-width:900px){.cols{grid-template-columns:1fr}}
+.panel{background:var(--slab);border:1px solid var(--line);border-radius:14px;padding:16px}
+.panel h2,.panel h3{font:700 17px var(--disp);margin:0 0 12px}
+.hint{font-size:13px;color:var(--mute);margin:8px 0 0}
+
+/* buttons */
+.btn{border:1px solid var(--line);background:var(--slab2);padding:9px 14px;border-radius:10px;font-weight:600;font-size:14px}
+.btn:hover{border-color:#4a5185}
+.btn.go{background:var(--hi);border-color:var(--hi);color:#1d1600;font:700 16px var(--disp);padding:12px 22px}
+.btn.go:hover{filter:brightness(1.07)}
+.btn.sm{padding:5px 10px;font-size:13px;border-radius:8px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+input[type=text],input[type=number]{background:var(--slab2);border:1px solid var(--line);border-radius:9px;padding:8px 10px;width:100%}
+input[type=number]{width:84px}
+.check{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;padding:3px 0}
+.check input{accent-color:var(--hi);width:16px;height:16px}
+
+/* teams */
+.teams{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:680px){.teams{grid-template-columns:1fr}}
+.team{border-radius:14px;overflow:hidden;border:1px solid var(--line);background:var(--slab)}
+.team>h2{margin:0;padding:12px 16px;font:800 18px var(--disp)}
+.team.blue>h2{color:var(--blue);background:linear-gradient(90deg,var(--blue-d),transparent 80%)}
+.team.red>h2{color:var(--red);background:linear-gradient(90deg,var(--red-d),transparent 80%)}
+.slot{display:grid;grid-template-columns:62px 1fr auto;gap:12px;align-items:center;padding:10px 14px;border-top:1px solid var(--line);transition:background .3s}
+.slot .pic{width:62px;height:62px;border-radius:12px;overflow:hidden;background:var(--slab2);position:relative}
+.slot .pic img{width:100%;height:100%;display:block}
+.slot .pic .q{position:absolute;inset:0;display:grid;place-items:center;font:800 26px var(--disp);color:var(--mute)}
+.slot.pending .pic{animation:wait 1s ease-in-out infinite}
+@keyframes wait{50%{box-shadow:0 0 0 3px rgba(255,210,63,.5)}}
+.slot.landed .pic{animation:land .5s cubic-bezier(.2,1.5,.4,1)}
+@keyframes land{0%{transform:translateY(-26px) scale(.7);opacity:0}100%{transform:none;opacity:1}}
+.slot.active{background:rgba(255,210,63,.07)}
+.slot.locked .pic{box-shadow:0 0 0 2px var(--hi)}
+.slot .lane{font-size:12px;color:var(--mute)}
+.slot .cn{font:700 18px/1.15 var(--disp)}
+.slot .pn{font-size:13px;color:var(--mute)}
+.slot .note{font-size:12px;line-height:16px;height:16px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.slot .cn,.slot .pn{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.note.c{color:var(--win)} .note.t{color:var(--lose)} .note.warn{color:var(--hi)}
+.acts{display:grid;grid-template-columns:repeat(2,auto);gap:4px}
+.act{border:1px solid var(--line);background:var(--slab2);border-radius:8px;padding:4px 8px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap}
+.act:hover{border-color:#4a5185}
+.act svg{width:14px;height:14px;flex:none}
+.act[aria-pressed=true]{border-color:var(--hi);color:var(--hi)}
+@media(max-width:520px){.slot{grid-template-columns:56px 1fr}.slot .pic{width:56px;height:56px}.acts{grid-column:1/-1;grid-template-columns:repeat(4,1fr)}.act{justify-content:center}}
+.pseudos{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.pl{display:flex;flex-direction:column;gap:4px}
+.pl select{background:var(--slab);border:1px solid var(--line);border-radius:8px;padding:5px 6px;font-size:13px;color:var(--mute)}
+.rk{font-style:normal;font-size:11px;font-weight:600;color:var(--hi);margin-left:auto;padding-left:8px}
+.pn .rk{margin-left:4px;padding:0}
+.bh small{font:500 12px var(--body);color:var(--mute);margin-left:8px}
+.board-gap{grid-column:1/-1;font-size:13px;color:var(--mute)}.board-gap.warn{color:var(--hi);font-weight:600}
+@media(max-width:680px){.pseudos{grid-template-columns:1fr 1fr}}
+.board{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+@media(max-width:680px){.board{grid-template-columns:1fr}}
+.bcol{border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:6px}
+.bcol.blue{background:linear-gradient(180deg,rgba(74,163,255,.14),rgba(74,163,255,.03))}
+.bcol.red{background:linear-gradient(180deg,rgba(255,84,104,.14),rgba(255,84,104,.03))}
+.bh{font:800 15px var(--disp)}.bcol.blue .bh{color:var(--blue)}.bcol.red .bh{color:var(--red)}
+.pchip{display:flex;gap:8px;align-items:baseline;background:var(--slab2);border:1px solid var(--line);border-radius:9px;padding:7px 10px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;will-change:transform}
+.pchip.blue{border-left:3px solid var(--blue)}.pchip.red{border-left:3px solid var(--red)}
+.pchip span{font-size:11px;font-weight:500;color:var(--mute);width:48px;flex:none}
+.sep{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+.sep-h{font-weight:600;margin-bottom:8px}
+summary.sep-h{cursor:pointer}
+.fc-g{margin-top:10px}
+.fc-g>span{display:block;font-size:13px;font-weight:600;margin-bottom:6px}
+.sep select{background:var(--slab2);border:1px solid var(--line);border-radius:8px;padding:6px 8px;max-width:180px}
+.sep-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.sp{display:flex;align-items:center;gap:8px;background:var(--slab2);border:1px solid var(--line);border-radius:999px;padding:4px 6px 4px 12px;font-size:13px;font-weight:600}
+.sp.bad{border-color:var(--hi);color:var(--hi)}
+.sp button{background:none;border:0;color:var(--mute);font-size:12px;padding:2px 6px;border-radius:999px}
+.sp button:hover{color:var(--txt);background:var(--slab)}
+.board-warn{grid-column:1/-1;color:var(--hi);font-size:13px;font-weight:600}
+[data-drag]{cursor:grab;touch-action:none;user-select:none}
+.grip{width:12px;height:12px;flex:none;opacity:.5;vertical-align:-1px;margin-right:3px}
+.pchip .grip{align-self:center;margin:0}
+.dragname{display:inline-flex;align-items:center;border-radius:6px;padding:1px 4px 1px 0}
+.dragname:hover{background:var(--slab2);color:var(--txt)}
+.drop-over{outline:2px solid var(--hi);outline-offset:2px;background:rgba(255,210,63,.12)!important;color:var(--txt)}
+.drag-src{opacity:.35}
+.ghost{position:fixed;z-index:50;pointer-events:none;background:var(--hi);color:#1d1600;font-weight:700;padding:6px 12px;border-radius:9px;box-shadow:0 10px 30px rgba(0,0,0,.5);transform:translate(-50%,-120%) rotate(-3deg)}
+body.dragging,body.dragging *{cursor:grabbing!important}
+.act.build{grid-column:1/-1;justify-content:center;border-color:#5a4d1c;color:var(--hi)}
+.act:disabled{opacity:.4;cursor:not-allowed}
+.bm{position:fixed;inset:0;background:rgba(6,7,18,.72);backdrop-filter:blur(3px);z-index:60;display:grid;place-items:center;padding:16px;overflow:auto}
+.bm-card{background:var(--slab);border:1px solid var(--hi);border-radius:18px;max-width:760px;width:100%;padding:20px;box-shadow:0 30px 80px rgba(0,0,0,.6);animation:pop .35s cubic-bezier(.2,1.4,.4,1)}
+@keyframes pop{from{transform:scale(.94);opacity:0}to{transform:none;opacity:1}}
+.bm-head{display:flex;gap:14px;align-items:center;margin-bottom:6px}.bm-head>img{width:72px;height:72px;border-radius:14px}
+.bm-head .vt{margin:0;font:800 30px var(--disp)}.bm-head .ctx{color:var(--mute);font-size:13px}
+.bm-sec{border-top:1px solid var(--line);padding:12px 0 4px;margin-top:10px}
+.bm-sec h4{margin:0 0 8px;font:700 14px var(--disp);color:var(--mute)}
+.bm-row,.bm-items{display:flex;flex-wrap:wrap;gap:10px}
+.bi{display:flex;flex-direction:column;align-items:center;gap:4px;width:92px;text-align:center;font-size:12px;line-height:1.2}
+.bi img{width:48px;height:48px;border-radius:9px;border:1px solid var(--line)}
+.bi.start em{font-style:normal;font-size:10px;color:var(--hi)}
+.bm-runes{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:560px){.bm-runes{grid-template-columns:1fr}}
+.tree{background:var(--slab2);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:7px}
+.tree-ic{width:28px;height:28px}
+.tn{display:flex;align-items:center;gap:8px;font:700 14px var(--disp)}.tn em{font:400 12px var(--body);color:var(--mute)}
+.ks{display:flex;align-items:center;gap:10px;font:700 15px var(--disp)}.ks img{width:52px;height:52px;border-radius:50%;background:#0d0f1d}
+.rn{display:flex;align-items:center;gap:10px;font-size:13px}.rn img{width:32px;height:32px;border-radius:50%;background:#0d0f1d}
+.rn.sm img{width:22px;height:22px}.rn.sm{font-size:12px;color:var(--mute)}
+.shards{border-top:1px solid var(--line);padding-top:6px;display:flex;flex-direction:column;gap:4px}
+.skills{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--mute)}
+.skills b{display:grid;place-items:center;width:36px;height:36px;border-radius:9px;background:var(--slab2);border:1px solid var(--line);color:var(--txt);font:800 17px var(--disp)}
+.bm-actions{margin-top:16px;border-top:1px solid var(--line);padding-top:14px}
+.slot.next{background:rgba(255,210,63,.06);box-shadow:inset 3px 0 0 var(--hi)}
+.nx{color:var(--hi);font-weight:600}
+.picker{margin-bottom:14px;border-color:var(--hi)}
+.pk-head{display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+.pk-head>img{width:56px;height:56px;border-radius:12px}
+.pk-head h3{margin:0;font:800 24px var(--disp)}
+.pk-head .ctx{font-size:13px;color:var(--mute)}
+.seg{margin-left:auto;display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{background:none;border:0;padding:7px 12px;font-weight:600;font-size:13px;color:var(--mute)}
+.seg button[aria-pressed=true]{background:var(--hi);color:#1d1600}
+.pk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:8px}
+.pk-card{display:flex;flex-direction:column;align-items:center;gap:3px;background:var(--slab2);border:1px solid var(--line);border-radius:12px;padding:10px 6px;text-align:center}
+.pk-card:hover:not(:disabled){border-color:var(--hi);transform:translateY(-2px)}
+.pk-card img{width:60px;height:60px;border-radius:10px}
+.pk-card .nm{font:700 15px var(--disp)}
+.pk-card .wr{font-size:12px;font-weight:600}
+.pk-card .tg{font-size:11px;color:var(--mute);background:var(--slab);border-radius:6px;padding:1px 6px}
+.pk-card:disabled{opacity:.4;cursor:not-allowed}
+
+/* filters */
+.fgroup{border-top:1px solid var(--line);padding:11px 0 4px}
+.fgroup:first-of-type{border-top:0;padding-top:0}
+.fgroup>span{display:block;font-size:13px;font-weight:600;margin-bottom:7px}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{border:1px solid var(--line);background:var(--slab2);padding:4px 10px;border-radius:999px;font-size:13px}
+.chip[aria-pressed=true]{background:var(--hi);border-color:var(--hi);color:#1d1600;font-weight:600}
+
+/* single + lists */
+.tags{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:8px}
+.tag{font-size:12px;padding:3px 9px;border-radius:999px;background:var(--slab2);color:var(--mute)}
+.hist{display:flex;gap:6px;flex-wrap:wrap}
+.hist img{width:40px;height:40px;border-radius:8px;display:block}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:680px){.two{grid-template-columns:1fr}}
+.li{display:flex;align-items:center;gap:10px;padding:6px 6px;border-radius:9px}
+.li+.li{border-top:1px solid var(--line)}
+.li img{width:36px;height:36px;border-radius:8px}
+.li .wr{margin-left:auto;font-weight:700;font-variant-numeric:tabular-nums}
+.li.hit{background:rgba(255,210,63,.12)}
+.wr.c{color:var(--lose)} .wr.t{color:var(--win)}
+.search{position:relative;flex:1;min-width:200px}
+.sugg{position:absolute;left:0;right:0;top:calc(100% + 4px);background:var(--slab2);border:1px solid var(--line);border-radius:10px;z-index:5;overflow:hidden;display:none}
+.sugg button{display:flex;gap:8px;align-items:center;width:100%;background:none;border:0;padding:6px 10px;text-align:left}
+.sugg button img{width:26px;height:26px;border-radius:6px}
+.sugg button.act-s,.sugg button:hover{background:#2c3158}
+.pool{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:8px;max-height:520px;overflow:auto}
+.pc{display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:0;padding:4px;font-size:11px;text-align:center;border-radius:10px}
+.pc img{width:56px;height:56px;border-radius:10px}
+.pc[aria-pressed=false] img{filter:grayscale(1) brightness(.4)}
+.pc[aria-pressed=false]{color:var(--mute);text-decoration:line-through}
+.pc.flt img{outline:2px dashed var(--line);outline-offset:2px}
+.toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,10px);background:var(--slab2);border:1px solid var(--hi);padding:10px 16px;border-radius:10px;opacity:0;transition:.2s;pointer-events:none;z-index:9}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+footer{margin-top:34px;padding-top:14px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;align-items:center;gap:6px 20px;color:var(--mute);font-size:13px}
+footer a{color:inherit;text-decoration:none}
+footer a:hover{color:var(--txt);text-decoration:underline;text-underline-offset:3px}
+footer .me{color:var(--txt);font-weight:600}
+.ft-links{display:flex;flex-wrap:wrap;gap:6px 16px}
+.ft-note{margin:0 0 0 auto}
+@media(max-width:680px){.ft-note{margin-left:0;flex-basis:100%}}
+.faqlink{color:var(--txt);font-weight:600;text-underline-offset:3px}
+#faq{margin-top:34px;max-width:75ch;scroll-margin-top:16px}
+#faq>h2{font:700 20px var(--disp);margin:0 0 8px;text-wrap:balance}
+#faq>h2+p{margin:0 0 24px;color:var(--mute);text-wrap:pretty}
+#faq details{border-top:1px solid var(--line);scroll-margin-top:16px}
+#faq summary{cursor:pointer;padding:12px 0;display:flex;align-items:center;gap:10px}
+#faq summary::before{content:"+";color:var(--hi);font-weight:700;width:12px;flex:none}
+#faq details[open] summary::before{content:"−"}
+#faq summary::-webkit-details-marker{display:none}
+#faq h3{font:600 15px var(--body);margin:0}
+#faq details p{margin:0 0 14px 22px;color:var(--mute);text-wrap:pretty}
+.tip{position:relative;display:inline-grid;place-items:center;width:20px;height:20px;padding:0;margin-left:4px;border:1px solid var(--line);border-radius:50%;background:var(--slab2);color:var(--mute);font:700 12px/1 var(--body);vertical-align:1px}
+.tip::after{content:"";position:absolute;inset:-12px}
+.tip:hover,.tip[aria-expanded=true]{border-color:var(--hi);color:var(--hi)}
+.tipbox{position:fixed;z-index:40;width:min(300px,calc(100vw - 32px));background:var(--slab2);border:1px solid var(--hi);border-radius:10px;padding:10px 12px;font-size:13px;box-shadow:0 12px 30px rgba(5,6,16,.6)}
+.tipbox p{margin:0 0 6px;text-wrap:pretty}
+.tipbox a{color:var(--hi);font-weight:600;text-underline-offset:3px}
+#blueSlots:empty,#redSlots:empty{min-height:550px}
+#players:empty{min-height:76px}
+#board:empty{min-height:254px}
+@media(max-width:680px){#players:empty{min-height:356px}#board:empty{min-height:540px}}
+kbd{border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:0 5px;font-size:12px}
+/* flex: one team of five, no opponent */
+.of{display:none}
+.flex .of{display:revert}
+.flex .nf,.flex .team.red,.flex .bcol.red,.flex #players select,.flex .act[data-a=counter],.flex .act[data-a=target]{display:none}
+.flex .teams,.flex .board{grid-template-columns:1fr}
+[hidden]{display:none!important}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-logo" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#121426"/><rect x="11" y="11" width="42" height="42" rx="10" fill="none" stroke="#ffd23f" stroke-width="5"/><path d="M25 11h14l-7 7zM25 53h14l-7-7z" fill="#ffd23f"/><g fill="#ffd23f"><circle cx="23.5" cy="40.5" r="3.6"/><circle cx="32" cy="32" r="3.6"/><circle cx="40.5" cy="23.5" r="3.6"/></g></symbol>
+  <symbol id="i-dice" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="8.5" cy="8.5" r="1.6" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+  <symbol id="i-sword" viewBox="0 0 24 24"><path d="M14 4h6v6L9 21l-6-6z M5 13l6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+  <symbol id="i-grip" viewBox="0 0 24 24"><g fill="currentColor"><circle cx="9" cy="6" r="1.7"/><circle cx="15" cy="6" r="1.7"/><circle cx="9" cy="12" r="1.7"/><circle cx="15" cy="12" r="1.7"/><circle cx="9" cy="18" r="1.7"/><circle cx="15" cy="18" r="1.7"/></g></symbol>
+  <symbol id="i-scroll" viewBox="0 0 24 24"><path d="M6 3h11a2 2 0 0 1 2 2v12H8v2a2 2 0 1 1-4 0V5a2 2 0 0 1 2-2zM10 8h6M10 12h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3" fill="currentColor"/></symbol>
+</svg>
+<div class="wrap">
+  <div class="top">
+    <h1 class="brand"><svg class="logo" aria-hidden="true"><use href="#i-logo"/></svg><span>lol-custom-randomizer<small>Random teams, roles and champions for your League of Legends custom games</small></span></h1>
+    <div class="facts">
+      <span>Patch <b id="patch"></b></span>
+      <span><b id="poolCount"></b> champions in the draw</span>
+      <span>Champion of the day: <button id="daily"></button></span>
+      <a class="faqlink" href="#faq">FAQ</a>
+      <div class="seg" id="lang" role="group" aria-label="Language"><button data-l="fr">FR</button><button data-l="en">EN</button></div>
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button role="tab" data-tab="team" aria-selected="true">5v5 draw</button>
+    <button role="tab" data-tab="flex" aria-selected="false">Flex 5</button>
+    <button role="tab" data-tab="single" aria-selected="false">One champion</button>
+    <button role="tab" data-tab="counter" aria-selected="false">Counters</button>
+    <button role="tab" data-tab="pool" aria-selected="false">My pool</button>
+  </div>
+
+  <div class="stage idle" id="stage">
+    <div class="stage-bar"><button class="btn sm" id="skip" hidden>Reveal all</button>
+    <div class="stage-ctl">
+      <label for="speed">Suspense</label>
+      <select id="speed"><option value="2600">Long</option><option value="1600" selected>Normal</option><option value="700">Short</option><option value="0">None</option></select>
+      <label class="check" style="font-size:12px"><input type="checkbox" id="sound"> Sound</label>
+    </div></div>
+    <div class="reel"><div class="strip" id="strip"></div><div class="marker"></div></div>
+    <div class="verdict" id="verdict"><div class="ctx">The reel spins here on every draw.</div><div class="vt">Ready to draw</div></div>
+  </div>
+
+  <div class="cols">
+  <main>
+    <!-- 5v5 -->
+    <section id="tab-team">
+      <div class="row" style="margin-bottom:14px">
+        <button class="btn go" id="drawNext">Draw the next champion</button>
+        <button class="btn" id="drawRest">Draw all the others</button>
+        <button class="btn" id="clearChamps">Clear champions</button>
+        <button class="btn" id="copyTeam">Copy teams</button>
+        <button class="btn" id="copyBuilds" hidden>Copy build links</button>
+      </div>
+      <div class="panel picker" id="picker" hidden></div>
+      <div class="teams">
+        <div class="team blue"><h2><span class="nf">Blue team</span><span class="of">Your team</span></h2><div id="blueSlots"></div></div>
+        <div class="team red"><h2>Red team</h2><div id="redSlots"></div></div>
+      </div>
+      <p class="hint of">All five players get a role and a champion. Click “Shuffle roles” to deal out the roles, or drag a name onto another to swap their places.</p>
+      <p class="hint nf">Champions are drawn one by one, role by role. Once the opposing player has a champion, you can pick one of its counters instead of drawing at random. On each line, <b>Counter</b> and <b>Prey</b> open this choice for the opposing player. Drag a player's name onto another to swap their places, even across teams.</p>
+      <div class="panel" style="margin-top:16px">
+        <h2>Players and options <button class="tip" data-tip="ranks" aria-label="Help">?</button></h2>
+        <div class="pseudos" id="players"></div>
+        <div class="board" id="board"></div>
+        <div class="sep nf">
+          <div class="sep-h">Players to put on different teams <button class="tip" data-tip="pairs" aria-label="Help">?</button></div>
+          <div class="row">
+            <select id="sepA" aria-label="First player"></select><span class="muted">and</span><select id="sepB" aria-label="Second player"></select>
+            <button class="btn sm" id="sepAdd">Split these two players</button>
+          </div>
+          <div class="sep-list" id="sepList"></div>
+        </div>
+        <details class="sep">
+          <summary class="sep-h">Force a role or a champion type on a player <button class="tip" data-tip="force" aria-label="Help">?</button></summary>
+          <div class="row"><label for="fcP">Player</label><select id="fcP"></select></div>
+          <div class="fc-g"><span>Player role</span><div class="chips" id="fcL"></div></div>
+          <div id="fcT"></div>
+          <label class="check" style="margin-top:8px"><input type="checkbox" id="oForceHide"> Discreet: nothing shows on the player's line and the reel spins as usual</label>
+          <div class="sep-list" id="fcList"></div>
+          <p class="hint">“Player role” keeps them in that role on every shuffle, with at most two players per role, one on each team. “Champion role” only changes the champion: an ADC player can get a top champion.</p>
+          <p class="hint">Within a champion category, one match is enough (Tank or Support). Across categories, all must match (Tank and Top). These choices follow the player and override the filters and the pool. If no champion of the forced type plays their role, they get one from another role.</p>
+        </details>
+        <div class="row" style="margin-top:12px">
+          <button class="btn go nf" id="shuffleTeams" style="font-size:15px;padding:10px 18px">Shuffle teams</button>
+          <button class="btn" id="shuffleRoles">Shuffle roles</button>
+          <button class="btn sm" id="clearPlayers">Clear names and ranks</button>
+        </div>
+        <div style="margin-top:12px;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:2px 16px">
+          <label class="check" style="grid-column:1/-1;flex-wrap:wrap">Possible champions for a role:
+            <select id="oPool" style="background:var(--slab2);border:1px solid var(--line);border-radius:8px;padding:5px 8px"><option value="role">Those who play this role</option><option value="main">Main role only</option><option value="any">All champions, whatever the role</option></select></label>
+          <p class="hint" id="roleCounts" style="grid-column:1/-1;margin:0 0 6px"></p>
+          <label class="check nf"><input type="checkbox" id="oUnique" checked> No duplicates across teams</label>
+          <label class="check nf"><input type="checkbox" id="oAutoPick" checked> Suggest counters before each draw</label>
+          <label class="check"><input type="checkbox" id="oBuild"> Also draw a build and runes</label>
+          <label class="check" hidden><input type="checkbox" id="oBuildAdapt" checked> Build suited to the champion (AD, AP, tank)</label>
+          <label class="check nf"><input type="checkbox" id="oBalance" checked> Balance teams by rank</label>
+          <label class="check nf"><input type="checkbox" id="oDuel"> Put similar ranks head to head</label>
+        </div>
+      </div>
+    </section>
+
+    <!-- single -->
+    <section id="tab-single" hidden>
+      <div class="row" style="justify-content:center;margin-bottom:6px">
+        <button class="btn go" id="rollOne">Draw a champion</button>
+        <button class="btn" id="skipOne">Skip this one</button>
+        <button class="btn" id="toCounter">See its counters</button>
+      </div>
+      <p class="hint" style="text-align:center"><kbd>Space</kbd> draws again. “Skip” removes the champion until the page reloads.</p>
+      <div class="tags" id="sTags"></div>
+      <div class="panel" style="margin-top:16px">
+        <div class="row" style="justify-content:space-between"><h2 style="margin:0">Recent draws</h2><button class="btn sm" id="clearHist">Clear</button></div>
+        <div class="hist" id="hist" style="margin-top:10px"></div>
+        <p class="hint" id="skippedInfo"></p>
+      </div>
+    </section>
+
+    <!-- counter -->
+    <section id="tab-counter" hidden>
+      <div class="panel" style="margin-bottom:14px">
+        <h2>Which champion came up? <button class="tip" data-tip="counters" aria-label="Help">?</button></h2>
+        <div class="row">
+          <div class="search"><input type="text" id="cSearch" placeholder="Locke, Yone, Jinx…" autocomplete="off" aria-label="Search for a champion"><div class="sugg" id="cSugg"></div></div>
+          <button class="btn" id="cRandom">Random</button>
+        </div>
+        <div class="row" style="margin-top:12px" id="cLanes"></div>
+        <div class="row" style="margin-top:12px">
+          <button class="btn go" id="cRollCounter">Draw a counter</button>
+          <button class="btn go" id="cRollTarget" style="background:var(--slab2);color:var(--txt);border-color:var(--hi)">Draw a prey</button>
+          <label class="check"><input type="checkbox" id="cUseFilters"> Use my filters</label>
+        </div>
+        <p class="hint">A counter is a champion it loses to. A prey is a champion it beats.</p>
+      </div>
+      <div class="two">
+        <div class="panel"><h2>Loses to</h2><div id="cLose"></div></div>
+        <div class="panel"><h2>Beats</h2><div id="cWin"></div></div>
+      </div>
+    </section>
+
+    <!-- pool -->
+    <section id="tab-pool" hidden>
+      <div class="panel">
+        <h2>My pool</h2>
+        <p class="hint" style="margin:0 0 12px">Click a champion to remove it from the draw or put it back. A dotted outline marks a champion left out by the filters. Your pool stays saved in this browser.</p>
+        <div class="row" style="margin-bottom:12px">
+          <input type="text" id="pSearch" placeholder="Search" style="max-width:220px" aria-label="Search the pool">
+          <button class="btn sm" id="pAll">Select all</button>
+          <button class="btn sm" id="pNone">Clear all</button>
+          <button class="btn sm" id="pInvert">Invert</button>
+        </div>
+        <div class="pool" id="pool"></div>
+      </div>
+    </section>
+  </main>
+
+  <aside class="panel" id="filters">
+    <h2>Filters</h2>
+    <div class="fgroup nf"><span>Mode</span><div class="chips" id="fMode"><button class="chip" data-v="classic">Rift</button><button class="chip" data-v="aram">ARAM</button></div></div>
+    <div class="fgroup" id="fRole"><span>Role</span><div class="chips" data-key="role"></div></div>
+    <div class="fgroup"><span>Class</span><div class="chips" data-key="cls"></div></div>
+    <div class="fgroup"><span>Damage</span><div class="chips" data-key="dmg"></div></div>
+    <div class="fgroup"><span>Range</span><div class="chips" data-key="range"></div></div>
+    <div class="fgroup"><span>Difficulty</span><div class="chips" data-key="diff"></div></div>
+    <div class="fgroup"><span>Release year</span><div class="row"><input type="number" id="yMin" aria-label="From"> to <input type="number" id="yMax" aria-label="To"></div></div>
+    <div class="fgroup"><span>Region</span><div class="chips" data-key="region"></div></div>
+    <div class="fgroup"><button class="btn sm" id="resetF">Remove all filters</button></div>
+  </aside>
+  </div>
+
+  <section id="faq">
+    <h2>How it works</h2>
+    <p>lol-custom-randomizer is a free League of Legends tool for custom games with friends. It splits ten players into balanced teams, deals out roles, draws champions one by one, and can add random builds and runes. It also works for a five-player Flex stack. There is nothing to install and no account to create.</p>
+    <h2>FAQ</h2>
+    <details id="faq-ranks"><summary><h3>Do I have to enter ranks?</h3></summary><p>No, ranks are optional. Without any rank, teams are shuffled completely at random. With ranks, the site keeps the fairest splits. You can also fill in only some players: the others count as the average of the known ranks.</p></details>
+    <details id="faq-names"><summary><h3>Do I have to enter ten names?</h3></summary><p>No. Empty names stay as Player 1, Player 2 and so on, and every draw still works.</p></details>
+    <details id="faq-balance"><summary><h3>How are teams balanced?</h3></summary><p>Each division adds about 10% to a player's weight, so high ranks count for much more. The site compares the 252 possible 5v5 splits, keeps the closest ones and picks one at random.</p></details>
+    <details id="faq-pairs"><summary><h3>Can I keep two players on different teams?</h3></summary><p>Yes. Add the pair in "Players to put on different teams", and every team shuffle will respect it.</p></details>
+    <details id="faq-force"><summary><h3>Can I force a role or a champion on a player?</h3></summary><p>Yes. "Player role" keeps someone in a role on every shuffle. Champion role, class, damage, range and difficulty limit the champions they can get. You can tick several options, and discreet mode hides it all from their line.</p></details>
+    <details id="faq-flex"><summary><h3>How does Flex 5 work?</h3></summary><p>Flex 5 is for a stack of five with no opposing team. Each player gets a role and a champion. Switching between 5v5 and Flex 5 clears the current draw.</p></details>
+    <details id="faq-counters"><summary><h3>What are counters and preys?</h3></summary><p>A counter is a champion that beats the one facing it. A prey is a champion it beats. The numbers are LoLalytics matchups in Emerald and above, between players of the same role.</p></details>
+    <details id="faq-together"><summary><h3>Can several people use the link at the same time?</h3></summary><p>Yes. Everything runs in each person's browser, so nobody affects anyone else. It also means each person has their own draw: one person draws, then shares their screen or uses "Copy teams".</p></details>
+    <details id="faq-saved"><summary><h3>Are my settings saved?</h3></summary><p>Yes, in your browser only. Nothing is sent to a server. Settings are lost in private browsing and don't follow you to another device. The current draw is not saved.</p></details>
+    <details id="faq-free"><summary><h3>Is it free?</h3></summary><p>Yes. There is no account and nothing to install. This is a fan tool, not affiliated with Riot Games.</p></details>
+  </section>
+  <footer>
+    <span>by <a class="me" href="https://x.com/Mehlomw" target="_blank" rel="noopener">TLNP Mehlo</a></span>
+    <span class="ft-links"><a href="https://github.com/GaiaMI/lol-custom-randomizer" target="_blank" rel="noopener">Source code</a><a href="https://developer.riotgames.com/docs/lol#data-dragon" target="_blank" rel="noopener">Data Dragon</a><a href="https://lolalytics.com/" target="_blank" rel="noopener">LoLalytics</a></span>
+    <p class="ft-note">Patch 26.21. Not affiliated with Riot Games.</p>
+  </footer>
+</div>
+<div class="bm" id="bm" hidden role="dialog" aria-modal="true" aria-label="Build and runes">
+  <div class="bm-card"><div id="bmBody"></div>
+    <div class="row bm-actions"><button class="btn go" id="bmReroll">Reroll the build</button><button class="btn" id="bmLink">Copy the link</button><button class="btn" id="bmText">Copy as text</button><button class="btn sm" id="bmClose">Close</button></div>
+  </div></div>
+<div class="tipbox" id="tipBox" hidden></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+// Runs before the data: the page shows in the right language as soon as it appears
+const $=s=>document.querySelector(s);
+const store={get(k,d){try{const v=localStorage.getItem("rr_"+k);return v?JSON.parse(v):d;}catch(e){return d;}},set(k,v){try{localStorage.setItem("rr_"+k,JSON.stringify(v));}catch(e){}}};
+let LANG=store.get("lang",null)||(/^fr/i.test(navigator.language||"fr")?"fr":"en");
+const L=(fr,en)=>LANG==="en"?en:fr;
+// fixed text of the page, by its English wording. Text built in JS carries both languages through L()
+const STATIC_FR={"Within a champion category, one match is enough (Tank or Support). Across categories, all must match (Tank and Top). These choices follow the player and override the filters and the pool. If no champion of the forced type plays their role, they get one from another role.":"Dans une catégorie de champion, un seul choix suffit (Tank ou Support). Entre catégories, il faut tout respecter (Tank et Top). Ces choix suivent le joueur et passent avant les filtres et le pool. Si aucun champion du type imposé ne joue son poste, il en reçoit un d'un autre poste.",
+  "“Player role” keeps them in that role on every shuffle, with at most two players per role, one on each team. “Champion role” only changes the champion: an ADC player can get a top champion.":"« Poste du joueur » le garde sur ce poste à chaque mélange, avec deux joueurs au plus par poste, un dans chaque équipe. « Poste du champion » change seulement le champion : un joueur ADC peut recevoir un champion top.",
+  "Champions are drawn one by one, role by role. Once the opposing player has a champion, you can pick one of its counters instead of drawing at random. On each line,":"Les champions se tirent un par un, poste par poste. Quand l'adversaire d'en face a déjà son champion, tu peux choisir un de ses counters au lieu de tirer au hasard. Sur chaque ligne,",
+  "Click a champion to remove it from the draw or put it back. A dotted outline marks a champion left out by the filters. Your pool stays saved in this browser.":"Clique sur un champion pour le retirer du tirage ou l'y remettre. Le contour en pointillés signale un champion écarté par les filtres. Ton pool reste enregistré dans ce navigateur.",
+  "All five players get a role and a champion. Click “Shuffle roles” to deal out the roles, or drag a name onto another to swap their places.":"Les cinq joueurs reçoivent un poste et un champion. Clique sur « Mélanger les postes » pour répartir les postes, ou glisse un pseudo sur un autre pour échanger leurs places.",
+  "open this choice for the opposing player. Drag a player's name onto another to swap their places, even across teams.":"ouvrent ce choix pour le joueur d'en face. Glisse le pseudo d'un joueur sur un autre pour échanger leurs places, même d'une équipe à l'autre.",
+  "Random teams, roles and champions for your League of Legends custom games":"Équipes, postes et champions aléatoires pour vos parties personnalisées League of Legends",
+  "draws again. “Skip” removes the champion until the page reloads.":"relance le tirage. « Passer » retire le champion jusqu'au rechargement de la page.",
+  "A counter is a champion it loses to. A prey is a champion it beats.":"Un counter est un champion contre qui il perd. Une prey est un champion qu'il bat.",
+  "Discreet: nothing shows on the player's line and the reel spins as usual":"Discret : rien ne s'affiche sur la ligne du joueur et la bande défile normalement",
+  "Force a role or a champion type on a player":"Imposer un poste ou un type de champion à un joueur",
+  "Players to put on different teams":"Joueurs à mettre dans des équipes différentes",
+  "Suggest counters before each draw":"Proposer les counters avant chaque tirage",
+  "All champions, whatever the role":"Tous les champions, peu importe le poste",
+  "Build suited to the champion (AD, AP, tank)":"Build adapté au champion (AD, AP, tank)",
+  "Balance teams by rank":"Équilibrer les équipes selon les rangs",
+  "Put similar ranks head to head":"Mettre face à face des rangs proches",
+  "Possible champions for a role:":"Champions possibles pour un poste :",
+  "Also draw a build and runes":"Tirer aussi un build et des runes",
+  "No duplicates across teams":"Pas de doublon entre équipes",
+  "Copy build links":"Copier les liens des builds",
+  "Draw the next champion":"Tirer le prochain champion",
+  "Main role only":"Poste principal seulement",
+  "Which champion came up?":"Quel champion est tombé ?",
+  "champions in the draw":"champions dans le tirage",
+  "Split these two players":"Séparer ces deux joueurs",
+  "Clear names and ranks":"Effacer pseudos et rangs",
+  "Those who play this role":"Ceux qui jouent ce poste",
+  "Remove all filters":"Retirer tous les filtres",
+  "Search the pool":"Rechercher dans le pool",
+  "Draw all the others":"Tirer tous les autres",
+  "Use my filters":"Respecter mes filtres",
+  "Shuffle teams":"Mélanger les équipes",
+  "Search for a champion":"Chercher un champion",
+  "Clear champions":"Vider les champions",
+  "Shuffle roles":"Mélanger les postes",
+  "Champion of the day:":"Champion du jour :",
+  "Copy teams":"Copier les équipes",
+  "Players and options":"Joueurs et options",
+  "Draw a champion":"Tirer un champion",
+  "See its counters":"Voir ses counters",
+  "Reroll the build":"Relancer le build",
+  "Recent draws":"Derniers tirages",
+  "Draw a counter":"Tirer un counter",
+  "Player role":"Poste du joueur",
+  "Skip this one":"Passer celui-ci",
+  "Beats":"Il gagne contre",
+  "Release year":"Année de sortie",
+  "Copy as text":"Copier en texte",
+  "First player":"Premier joueur",
+  "Draw a prey":"Tirer une prey",
+  "Loses to":"Il perd contre",
+  "Build and runes":"Build et runes",
+  "Copy the link":"Copier le lien",
+  "Second player":"Second joueur",
+  "Clear all":"Tout décocher",
+  "Reveal all":"Tout révéler",
+  "Blue team":"Équipe bleue",
+  "Red team":"Équipe rouge",
+  "One champion":"Un champion",
+  "Select all":"Tout cocher",
+  "5v5 draw":"Tirage 5v5",
+  "Your team":"Ton équipe",
+  "Search":"Rechercher",
+  "Difficulty":"Difficulté",
+  "Random":"Au hasard",
+  "My pool":"Mon pool",
+  "Invert":"Inverser",
+  "Clear":"Effacer",
+  "Filters":"Filtres",
+  "Language":"Langue",
+  "Player":"Joueur",
+  "Space":"Espace",
+  "Rift":"Faille",
+  "Class":"Classe",
+  "Damage":"Dégâts",
+  "Range":"Portée",
+  "Region":"Région",
+  "Close":"Fermer",
+  "Short":"Court",
+  "None":"Aucun",
+  "Role":"Poste",
+  "Sound":"Son",
+  "and":"et",
+  "From":"De",
+  "To":"À",
+  "to":"à",
+  "Help":"Aide",
+  "How it works":"Comment ça marche",
+  "lol-custom-randomizer is a free League of Legends tool for custom games with friends. It splits ten players into balanced teams, deals out roles, draws champions one by one, and can add random builds and runes. It also works for a five-player Flex stack. There is nothing to install and no account to create.":"lol-custom-randomizer est un outil gratuit pour vos parties personnalisées League of Legends entre amis. Il répartit dix joueurs en équipes équilibrées, distribue les postes, tire les champions un par un et peut ajouter des builds et des runes aléatoires. Il marche aussi pour un groupe Flex de cinq. Il n'y a rien à installer et aucun compte à créer.",
+  "Do I have to enter ranks?":"Faut-il entrer des rangs ?",
+  "No, ranks are optional. Without any rank, teams are shuffled completely at random. With ranks, the site keeps the fairest splits. You can also fill in only some players: the others count as the average of the known ranks.":"Non, les rangs sont facultatifs. Sans aucun rang, les équipes sont mélangées complètement au hasard. Avec des rangs, le site garde les répartitions les plus justes. Tu peux aussi n'en remplir que quelques-uns : les autres joueurs comptent pour la moyenne des rangs connus.",
+  "Do I have to enter ten names?":"Faut-il entrer dix pseudos ?",
+  "No. Empty names stay as Player 1, Player 2 and so on, and every draw still works.":"Non. Les pseudos vides restent Joueur 1, Joueur 2, etc., et tous les tirages fonctionnent quand même.",
+  "How are teams balanced?":"Comment les équipes sont-elles équilibrées ?",
+  "Each division adds about 10% to a player's weight, so high ranks count for much more. The site compares the 252 possible 5v5 splits, keeps the closest ones and picks one at random.":"Chaque division ajoute environ 10 % au poids d'un joueur, donc les hauts rangs comptent beaucoup plus. Le site compare les 252 répartitions possibles en 5 contre 5, garde les plus serrées et en tire une au hasard.",
+  "Can I keep two players on different teams?":"Peut-on séparer deux joueurs ?",
+  "Yes. Add the pair in \"Players to put on different teams\", and every team shuffle will respect it.":"Oui. Ajoute la paire dans « Joueurs à mettre dans des équipes différentes », et chaque mélange des équipes la respectera.",
+  "Can I force a role or a champion on a player?":"Peut-on imposer un poste ou un champion à un joueur ?",
+  "Yes. \"Player role\" keeps someone in a role on every shuffle. Champion role, class, damage, range and difficulty limit the champions they can get. You can tick several options, and discreet mode hides it all from their line.":"Oui. « Poste du joueur » garde quelqu'un sur un poste à chaque mélange. Le poste du champion, la classe, les dégâts, la portée et la difficulté limitent les champions qu'il peut recevoir. Tu peux cocher plusieurs options, et le mode discret cache tout sur sa ligne.",
+  "How does Flex 5 work?":"Comment marche Flex 5 ?",
+  "Flex 5 is for a stack of five with no opposing team. Each player gets a role and a champion. Switching between 5v5 and Flex 5 clears the current draw.":"Flex 5 sert à un groupe de cinq, sans équipe adverse. Chaque joueur reçoit un poste et un champion. Passer du 5v5 au Flex 5 vide le tirage en cours.",
+  "What are counters and preys?":"Que sont les counters et les preys ?",
+  "A counter is a champion that beats the one facing it. A prey is a champion it beats. The numbers are LoLalytics matchups in Emerald and above, between players of the same role.":"Un counter est un champion qui bat celui d'en face. Une prey est un champion qu'il bat. Les chiffres sont des matchups LoLalytics en Émeraude et plus, entre joueurs du même poste.",
+  "Can several people use the link at the same time?":"Plusieurs personnes peuvent-elles utiliser le lien en même temps ?",
+  "Yes. Everything runs in each person's browser, so nobody affects anyone else. It also means each person has their own draw: one person draws, then shares their screen or uses \"Copy teams\".":"Oui. Tout tourne dans le navigateur de chacun, donc personne ne gêne personne. Ça veut aussi dire que chacun a son propre tirage : une personne tire, puis partage son écran ou utilise « Copier les équipes ».",
+  "Are my settings saved?":"Mes réglages sont-ils enregistrés ?",
+  "Yes, in your browser only. Nothing is sent to a server. Settings are lost in private browsing and don't follow you to another device. The current draw is not saved.":"Oui, dans ton navigateur uniquement. Rien n'est envoyé sur un serveur. Les réglages sont perdus en navigation privée et ne suivent pas d'un appareil à l'autre. Le tirage en cours n'est pas enregistré.",
+  "Is it free?":"Est-ce gratuit ?",
+  "Yes. There is no account and nothing to install. This is a fan tool, not affiliated with Riot Games.":"Oui. Il n'y a ni compte ni installation. C'est un outil de fan, non affilié à Riot Games.",
+  "Source code":"Code source",
+  "Patch 26.21. Not affiliated with Riot Games.":"Patch 26.21. Non affilié à Riot Games.",
+  "Ready to draw":"Prêt à tirer",
+  "The reel spins here on every draw.":"La bande défile ici à chaque tirage."};
+const STATIC=[]; // [text node or element, attribute or null, English, French]
+for(let w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT),n;n=w.nextNode();){const k=n.nodeValue.trim();if(STATIC_FR[k])STATIC.push([n,null,n.nodeValue,n.nodeValue.replace(k,()=>STATIC_FR[k])]);}
+document.querySelectorAll("[aria-label],[placeholder]").forEach(e=>["aria-label","placeholder"].forEach(a=>{const v=e.getAttribute(a);if(STATIC_FR[v])STATIC.push([e,a,v,STATIC_FR[v]]);}));
+function applyStatic(){
+  document.documentElement.lang=LANG;
+  STATIC.forEach(([n,a,en,fr])=>{const v=L(fr,en);if(a)n.setAttribute(a,v);else n.nodeValue=v;});
+  document.querySelectorAll("#lang button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.l===LANG));
+}
+applyStatic();
+</script>
+<script src="data.js?v=__DATA_V__"></script>
+<script>
+const ROLES = [["top","Top"],["jungle","Jungle"],["middle","Mid"],["bottom","ADC"],["support","Support"]];
+const ROLE_LBL = Object.fromEntries(ROLES);
+const CLS_FR = {Fighter:"Combattant",Mage:"Mage",Assassin:"Assassin",Tank:"Tank",Marksman:"Tireur",Support:"Support"};
+const RANGE_FR = {Melee:"Mêlée",Ranged:"Distance",Both:"Mêlée et distance"};
+const DIFF_FR = {1:"Facile",2:"Moyen",3:"Difficile"};
+const RANGE_EN = {Melee:"Melee",Ranged:"Ranged",Both:"Melee and ranged"};
+const DIFF_EN = {1:"Easy",2:"Medium",3:"Hard"};
+
+const CH = DATA.champs; // {n,fr,id,r,c,d,rg,df,y,reg}
+const BY = Object.fromEntries(CH.map(c=>[c.n,c]));
+const norm = s=>s.toLowerCase().normalize("NFD").replace(/[^a-z0-9]/g,"");
+const BYN = {}; CH.forEach(c=>{BYN[norm(c.n)]=c;BYN[norm(c.fr)]=c;});
+const label = n=>BY[n]?L(BY[n].fr,BY[n].n):n;
+const de = n=>{const l=label(n);return /^[AEIOUYHÉÈaeiouy]/.test(l)?"d'"+l:"de "+l;};
+
+// icons -> blob URLs (built once)
+const ICON = {};
+for(const c of CH){const b64=DATA.icons[c.id];if(!b64)continue;const bin=atob(b64),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);ICON[c.n]=URL.createObjectURL(new Blob([u],{type:"image/webp"}));}
+delete DATA.icons;
+const img = (n,alt=true)=>`<img src="${ICON[n]||""}" alt="${alt?esc(label(n)):""}">`;
+
+// counters with reciprocity
+// matchup data per champion AND per lane: key "Name|lane"
+const CB={},CW={},DIRECT=new Set();
+const mp=(o,k)=>o[k]||(o[k]=new Map());
+const laneOf=n=>BY[n].r[0];
+for(const [key,d] of Object.entries(DATA.counters)){
+  const [a,L]=key.split("|");if(!BY[a])continue;DIRECT.add(key);
+  (d.cb||[]).forEach(([o,w])=>{const oc=BYN[norm(o)];if(oc&&oc.n!==a){mp(CB,key).set(oc.n,w);const k2=oc.n+"|"+L;if(!mp(CW,k2).has(a))mp(CW,k2).set(a,+(100-w).toFixed(2));}});
+  (d.c||[]).forEach(([o,w])=>{const oc=BYN[norm(o)];if(oc&&oc.n!==a){mp(CW,key).set(oc.n,w);const k2=oc.n+"|"+L;if(!mp(CB,k2).has(a))mp(CB,k2).set(a,+(100-w).toFixed(2));}});
+}
+/** lane actually used for champion n when asked for lane L: L if we have enough data there, else its main lane */
+function dataLane(n,L){const ok=l=>(CB[n+"|"+l]||new Map()).size>=4&&(CW[n+"|"+l]||new Map()).size>=2;if(L&&ok(L))return L;if(ok(laneOf(n)))return laneOf(n);return BY[n].r.find(ok)||laneOf(n);}
+function lanesWithData(n){return ROLES.map(r=>r[0]).filter(l=>(CB[n+"|"+l]||new Map()).size>=4);}
+const losesTo=(n,L)=>[...(CB[n+"|"+dataLane(n,L)]||[])].sort((x,y)=>x[1]-y[1]);
+const beats=(n,L)=>[...(CW[n+"|"+dataLane(n,L)]||[])].sort((x,y)=>y[1]-x[1]);
+
+// utils
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const txt=v=>typeof v==="function"?v():v; // slot notes are functions so they follow the language
+const teamL=t=>t==="blue"?L("Bleu","Blue"):L("Rouge","Red");
+function esc(s){return String(s).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));}
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("show"),1800);}
+async function copy(s){try{await navigator.clipboard.writeText(s);toast(L("Équipes copiées","Teams copied"));}catch(e){toast(L("Le navigateur a bloqué la copie","The browser blocked copying"));}}
+let actx=null;
+function beep(f=600,d=.03,v=.04){if(!$("#sound").checked)return;try{actx=actx||new AudioContext();const o=actx.createOscillator(),g=actx.createGain();o.type="triangle";o.frequency.value=f;g.gain.value=v;o.connect(g);g.connect(actx.destination);o.start();g.gain.exponentialRampToValueAtTime(.0001,actx.currentTime+d);o.stop(actx.currentTime+d);}catch(e){}}
+const pct=w=>L(w.toFixed(1).replace(".",",")+" %",w.toFixed(1)+"%");
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+
+// ---------- reel ----------
+const CELL=106; // 96 + gap 10
+let skipAll=false;
+function idleStrip(){const s=$("#strip");s.style.transition="none";s.innerHTML=shuffle(CH).slice(0,30).map(c=>`<div class="cell">${img(c.n,false)}</div>`).join("");centerOn(14);}
+let centerIdx=0;
+function centerOn(i){centerIdx=i;const w=$(".reel").clientWidth;$("#strip").style.transform=`translateX(${w/2-48-i*CELL}px)`;}
+function setVerdict(html){$("#verdict").innerHTML=html;}
+/** spins the reel and stops on `winner`. `from` = names used as decoys. */
+async function spin(winner,from,verdictHtml,pre,durOverride){
+  const stage=$("#stage"),strip=$("#strip"),sp=+$("#speed").value,dur=skipAll||sp===0?0:(durOverride!=null?Math.min(durOverride,sp):sp);
+  stage.classList.remove("idle","won");
+  if(pre)setVerdict(pre);
+  if(dur===0){strip.style.transition="none";strip.innerHTML=`<div class="cell">${img(winner,false)}</div>`;centerOn(0);}
+  else{
+    const decoys=(from&&from.length>1?from:CH.map(c=>c.n)).filter(n=>n!==winner);
+    const N=Math.max(26,Math.round(dur/45)),W=N-4,cells=[];
+    for(let i=0;i<N;i++)cells.push(i===W?winner:pick(decoys.length?decoys:[winner]));
+    strip.style.transition="none";strip.innerHTML=cells.map(n=>`<div class="cell">${img(n,false)}</div>`).join("");
+    centerOn(1);strip.offsetWidth;
+    const jitter=(Math.random()-.5)*60;
+    const w=$(".reel").clientWidth,target=w/2-48-W*CELL+jitter;
+    strip.style.transition=`transform ${dur}ms cubic-bezier(.12,.75,.2,1)`;
+    strip.style.transform=`translateX(${target}px)`;
+    // tick sound as cells pass the marker
+    let last=-1;const t0=performance.now();
+    await new Promise(res=>{const loop=()=>{
+      if(skipAll){strip.style.transition="none";strip.style.transform=`translateX(${w/2-48-W*CELL}px)`;return res();}
+      const m=new DOMMatrixReadOnly(getComputedStyle(strip).transform),idx=Math.round((w/2-48-m.m41)/CELL);
+      if(idx!==last){last=idx;beep(520+Math.random()*80,.025,.025);}
+      if(performance.now()-t0<dur+30)requestAnimationFrame(loop);else res();};requestAnimationFrame(loop);});
+    // settle exactly centered
+    centerIdx=W;strip.style.transition="transform 260ms ease-out";strip.style.transform=`translateX(${w/2-48-W*CELL}px)`;
+    await sleep(skipAll?0:260);
+  }
+  stage.classList.add("won");beep(880,.18,.06);
+  setVerdict(verdictHtml);
+}
+window.addEventListener("resize",()=>{if(busy)return;$("#strip").style.transition="none";centerOn(centerIdx);});
+
+// ---------- filters ----------
+const F=store.get("filters2",{mode:"classic",role:[],cls:[],dmg:[],range:[],diff:[],region:[],yMin:2009,yMax:2026});
+let excluded=new Set(store.get("excluded",[]));let skipped=new Set();
+const OPTS={role:ROLES,cls:Object.entries(CLS_FR),dmg:[["AD","AD"],["AP","AP"],["Hybrid","Hybride"]],range:[["Melee","Mêlée"],["Ranged","Distance"]],diff:[["1","Facile"],["2","Moyen"],["3","Difficile"]],region:[...new Set(CH.map(c=>c.reg))].sort().map(r=>[r,r])};
+const optL=(k,v,l)=>LANG==="en"&&k!=="role"?(k==="diff"?DIFF_EN[v]:v):l;
+function renderFilters(){
+  document.querySelectorAll("[data-key]").forEach(box=>{const k=box.dataset.key;box.innerHTML=OPTS[k].map(([v,l])=>`<button class="chip" data-v="${esc(v)}" aria-pressed="${F[k].includes(v)}">${esc(optL(k,v,l))}</button>`).join("");});
+  document.querySelectorAll("#fMode .chip").forEach(c=>c.setAttribute("aria-pressed",c.dataset.v===F.mode));
+  $("#fRole").style.opacity=F.mode==="aram"?.4:1;$("#yMin").value=F.yMin;$("#yMax").value=F.yMax;
+}
+document.querySelectorAll("[data-key]").forEach(box=>box.addEventListener("click",e=>{const ch=e.target.closest(".chip");if(!ch)return;const k=box.dataset.key,v=ch.dataset.v;F[k]=F[k].includes(v)?F[k].filter(x=>x!==v):[...F[k],v];changed();}));
+$("#fMode").addEventListener("click",e=>{const ch=e.target.closest(".chip");if(!ch)return;F.mode=ch.dataset.v;changed();renderBoard();updateNext();});
+$("#yMin").addEventListener("change",e=>{F.yMin=+e.target.value||2009;changed();});
+$("#yMax").addEventListener("change",e=>{F.yMax=+e.target.value||2026;changed();});
+$("#resetF").onclick=()=>{Object.assign(F,{role:[],cls:[],dmg:[],range:[],diff:[],region:[],yMin:2009,yMax:2026});changed();};
+function changed(){store.set("filters2",F);renderFilters();updateCount();if(window.showRoleCounts)showRoleCounts();if(curTab==="pool")renderPool();}
+function passFilters(c,{ignoreRole=false}={}){
+  if(!ignoreRole&&F.mode!=="aram"&&F.role.length&&!c.r.some(r=>F.role.includes(r)))return false;
+  if(F.cls.length&&!c.c.some(x=>F.cls.includes(x)))return false;
+  if(F.dmg.length&&!F.dmg.includes(c.d))return false;
+  if(F.range.length&&!(F.range.includes(c.rg)||c.rg==="Both"))return false;
+  if(F.diff.length&&!F.diff.includes(String(c.df)))return false;
+  if(F.region.length&&!F.region.includes(c.reg))return false;
+  return c.y>=F.yMin&&c.y<=F.yMax;
+}
+const pool=o=>CH.filter(c=>!excluded.has(c.n)&&!skipped.has(c.n)&&passFilters(c,o));
+const updateCount=()=>{$("#poolCount").textContent=pool().length;};
+
+// ---------- tabs ----------
+let curTab="team";
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
+function showTab(t){const flex=t==="flex",sec=flex?"team":t;
+  if((flex||t==="team")&&FLEX!==flex){if(busy)return;setFormat(flex);}
+  curTab=sec;document.querySelectorAll(".tabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===t));["team","single","counter","pool"].forEach(x=>$("#tab-"+x).hidden=x!==sec);if(t==="pool")renderPool();}
+// switching between 5v5 and flex starts a new draw: blue is the flex team, so its champions can't carry over
+function setFormat(f){FLEX=f;store.set("flex",f);document.body.classList.toggle("flex",f);
+  [...T.blue,...T.red].forEach(s=>{s.champ=null;s.locked=false;s.note="";s.long="";s.nk="";});pk=null;
+  if(f&&F.mode!=="classic"){F.mode="classic";changed();}
+  $("#stage").classList.add("idle");renderPlayers();renderBoard();renderSep();updateNext();}
+
+// ---------- busy / skip ----------
+let busy=false;
+function setBusy(b,canSkip){busy=b;document.querySelectorAll("#drawNext,#drawRest,#shuffleTeams,#shuffleRoles").forEach(x=>x.disabled=b);$("#stage").classList.toggle("pinned",b&&canSkip);skipAll=false;$("#skip").hidden=!(b&&canSkip);document.querySelectorAll("#rollOne,#cRollCounter,#cRollTarget").forEach(x=>x.disabled=b);}
+$("#skip").onclick=()=>{skipAll=true;};
+
+// ---------- single ----------
+let hist=store.get("hist",[]);let cur=null;
+function tagsFor(c){return [...c.r.map(r=>ROLE_LBL[r]),...c.c.map(x=>L(CLS_FR[x],x)),c.d==="Hybrid"?L("Hybride","Hybrid"):c.d,L(RANGE_FR[c.rg],RANGE_EN[c.rg]),L(DIFF_FR[c.df],DIFF_EN[c.df]),c.reg,L("Sortie ","Released ")+c.y].map(t=>`<span class="tag">${esc(t)}</span>`).join("");}
+function renderHist(){$("#hist").innerHTML=hist.filter(n=>BY[n]).map(n=>`<span title="${esc(label(n))}">${img(n)}</span>`).join("")||`<span class="hint" style="margin:0">${L("Aucun tirage pour le moment.","No draws yet.")}</span>`;
+  $("#skippedInfo").textContent=skipped.size?L("Passés : ","Skipped: ")+[...skipped].map(label).join(", "):"";}
+async function rollOne(){
+  if(busy)return;const p=pool();if(!p.length){toast(L("Aucun champion ne passe les filtres","No champion passes the filters"));return;}
+  setBusy(true,false);const c=pick(p);$("#sTags").innerHTML="";
+  await spin(c.n,p.map(x=>x.n),`<div class="ctx">${L("Ton champion","Your champion")}</div><div class="vt">${esc(label(c.n))}</div>`,`<div class="ctx">${L("Tirage en cours…","Drawing…")}</div><div class="vt">&nbsp;</div>`);
+  cur=c;$("#sTags").innerHTML=tagsFor(c);hist.unshift(c.n);hist=hist.slice(0,30);store.set("hist",hist);renderHist();setBusy(false);
+}
+$("#rollOne").onclick=rollOne;
+$("#skipOne").onclick=()=>{if(cur){skipped.add(cur.n);updateCount();}rollOne();};
+$("#toCounter").onclick=()=>{if(cur){setCounterChamp(cur.n);showTab("counter");}};
+$("#clearHist").onclick=()=>{hist=[];store.set("hist",hist);skipped.clear();updateCount();renderHist();};
+document.addEventListener("keydown",e=>{if(e.code==="Space"&&curTab==="single"&&!/INPUT|SELECT|TEXTAREA|BUTTON/.test(document.activeElement.tagName)){e.preventDefault();rollOne();}});
+
+// ---------- 5v5 ----------
+let players=store.get("players",Array(10).fill(""));
+const T={blue:[],red:[]};
+let FLEX=store.get("flex",false); // flex plays with the five players of the blue team
+["blue","red"].forEach((t,ti)=>T[t]=ROLES.map(([r],i)=>({pi:ti*5+i,role:r,champ:null,locked:false,note:"",nk:"",state:""})));
+const pname=pi=>(players[pi]||"").trim()||L("Joueur ","Player ")+(pi+1);
+const other=t=>t==="blue"?"red":"blue";
+const ORDER=[0,1,2,3,4].flatMap(i=>[["blue",i],["red",i]]);
+// ---- ranks ----
+const TIERS=[["iron","Fer"],["bronze","Bronze"],["silver","Argent"],["gold","Or"],["plat","Platine"],["emerald","Émeraude"],["diamond","Diamant"]];
+const DIVS=["IV","III","II","I"];
+const TIER_EN={iron:"Iron",bronze:"Bronze",silver:"Silver",gold:"Gold",plat:"Platinum",emerald:"Emerald",diamond:"Diamond"};
+const tierL=([k,l])=>L(l,TIER_EN[k]);
+const rankOpts=()=>[["",L("Sans rang","No rank")],...TIERS.flatMap(([k,l])=>[4,3,2,1].map(d=>[`${k}-${d}`,`${tierL([k,l])} ${DIVS[4-d]}`])),["master",L("Maître","Master")],["gm",L("Grand Maître","Grandmaster")],["chall","Challenger"]];
+const rankL=v=>Object.fromEntries(rankOpts())[v];
+// divisions scale (Iron IV = 0, Diamond I = 27). Apex tiers are spread out: Master 29, GM 33, Challenger 39
+function rankScore(v){if(!v)return null;if(v==="master")return 29;if(v==="gm")return 33;if(v==="chall")return 39;const [k,d]=v.split("-");return TIERS.findIndex(t=>t[0]===k)*4+(4-+d);}
+function scoreLabel(x){if(x>=28.5){return x>=37?"Challenger":x>=31.5?L("Grand Maître","Grandmaster"):L("Maître","Master");}const r=Math.max(0,Math.min(27,Math.round(x)));return `${tierL(TIERS[Math.floor(r/4)])} ${DIVS[r%4]}`;}
+let ranks=store.get("ranks",Array(10).fill(""));
+function scoreOf(pi){const s=rankScore(ranks[pi]);if(s!=null)return s;const known=ranks.map(rankScore).filter(x=>x!=null);return known.length?known.reduce((a,b)=>a+b,0)/known.length:13;}
+const anyRank=()=>ranks.some(Boolean);
+// weight grows ~10 % per division, so high ranks count much more (Challenger ≈ 2,6× a Master, ≈ 12× an Or IV)
+const K=1.1,weightOf=pi=>Math.pow(K,scoreOf(pi));
+const effScore=pis=>Math.log(pis.reduce((a,p)=>a+weightOf(p),0)/pis.length)/Math.log(K);
+const teamAvg=t=>effScore(T[t].map(s=>s.pi));
+function renderPlayers(){
+  const opts=rankOpts().map(([v,l])=>`<option value="${v}">${l}</option>`).join("");
+  $("#players").innerHTML=players.map((p,j)=>FLEX&&teamOf(j)!=="blue"?"":`<div class="pl"><input type="text" data-i="${j}" placeholder="${L("Joueur ","Player ")+(j+1)}" value="${esc(p)}" aria-label="${L("Pseudo ","Name ")+(j+1)}"><select data-r="${j}" aria-label="${L("Rang du joueur ","Rank of player ")+(j+1)}">${opts}</select></div>`).join("");
+  document.querySelectorAll("#players select").forEach(sel=>{sel.value=ranks[+sel.dataset.r]||"";});
+}
+$("#players").addEventListener("input",e=>{if(e.target.dataset.i==null)return;const i=+e.target.dataset.i;players[i]=e.target.value;store.set("players",players);renderBoard();renderSep();render5();});
+$("#players").addEventListener("change",e=>{if(e.target.dataset.r==null)return;ranks[+e.target.dataset.r]=e.target.value;store.set("ranks",ranks);renderBoard();render5();});
+// best split of the 10 players (respects separated pairs), then roles
+function balancedOrder(within){
+  const all=[...T.blue,...T.red].map(s=>s.pi);
+  let blue,red;
+  if(within){blue=all.slice(0,5);red=all.slice(5);}
+  else{
+    const splits=[];
+    for(let m=0;m<1024;m++){if(!(m&1))continue;let c=0;for(let b=0;b<10;b++)if(m>>b&1)c++;if(c!==5)continue;
+      const B=all.filter((_,k)=>m>>k&1),R=all.filter((_,k)=>!(m>>k&1));
+      const bs=new Set(B);if(!apart().every(([a,b])=>bs.has(a)!==bs.has(b)))continue;
+      const d=Math.abs(effScore(B)-effScore(R));
+      splits.push([d,B,R]);}
+    if(!splits.length)return null;
+    const useBal=$("#oBalance").checked&&anyRank();
+    const best=Math.min(...splits.map(x=>x[0]));
+    const pool_=useBal?splits.filter(x=>x[0]<=best+0.35):splits;
+    [ ,blue,red]=pick(pool_);
+    if(Math.random()<.5)[blue,red]=[red,blue];
+  }
+  blue=seatTeam(blue);
+  if($("#oDuel").checked&&anyRank()){
+    // try many role orders for red, keep among the closest lane duels
+    const tries=[];for(let k=0;k<400;k++){const r=seatTeam(red);tries.push([r.reduce((a,p,i)=>a+Math.abs(scoreOf(p)-scoreOf(blue[i])),0),r]);}
+    const b=Math.min(...tries.map(x=>x[0]));red=pick(tries.filter(x=>x[0]<=b+1))[1];
+  } else red=seatTeam(red);
+  return [...blue,...red];
+}
+$("#clearPlayers").onclick=()=>{players=players.map(()=>"");ranks=ranks.map(()=>"");store.set("ranks",ranks);store.set("players",players);renderPlayers();renderBoard();renderSep();render5();};
+let sep=store.get("sep",[]);
+const teamOf=pi=>T.blue.some(s=>s.pi===pi)?"blue":"red";
+const sepBroken=()=>sep.filter(([a,b])=>teamOf(a)===teamOf(b));
+function validOrder(o){const blue=new Set(o.slice(0,5));return apart().every(([a,b])=>blue.has(a)!==blue.has(b));}
+function renderSep(){
+  const opts=players.map((_,j)=>`<option value="${j}">${esc(pname(j))}</option>`).join("");
+  const a=$("#sepA").value,b=$("#sepB").value;$("#sepA").innerHTML=opts;$("#sepB").innerHTML=opts;
+  $("#sepA").value=a||0;$("#sepB").value=b||1;
+  const broken=new Set(sepBroken().map(p=>p.join("-")));
+  $("#sepList").innerHTML=sep.length?sep.map(([x,y],k)=>`<span class="sp ${broken.has(x+"-"+y)?"bad":""}">${esc(pname(x))} ${L("et","and")} ${esc(pname(y))}${broken.has(x+"-"+y)?L(" (même équipe)"," (same team)"):""}<button data-k="${k}" aria-label="${L("Retirer","Remove")}">${L("Retirer","Remove")}</button></span>`).join(""):"";
+  renderForced();
+}
+$("#sepAdd").onclick=()=>{const a=+$("#sepA").value,b=+$("#sepB").value;if(a===b){toast(L("Choisis deux joueurs différents","Pick two different players"));return;}
+  if(sep.some(([x,y])=>(x===a&&y===b)||(x===b&&y===a))){toast(L("Cette paire est déjà séparée","This pair is already split"));return;}
+  const next=[...sep,[a,b]];const old=sep;sep=next;
+  // check that a valid split exists (5 vs 5)
+  let ok=false;for(let k=0;k<4000&&!ok;k++)ok=validOrder(shuffle([...Array(10).keys()]));
+  if(!ok){sep=old;toast(L("Impossible : avec cette paire en plus, aucune répartition en 5 contre 5 ne marche","Not possible: with this extra pair, no 5v5 split works"));return;}
+  store.set("sep",sep);renderSep();renderBoard();toast(L("Paire ajoutée. Clique sur « Mélanger les équipes »","Pair added. Click “Shuffle teams”"));};
+$("#sepList").addEventListener("click",e=>{const b=e.target.closest("[data-k]");if(!b)return;sep.splice(+b.dataset.k,1);store.set("sep",sep);renderSep();renderBoard();});
+// ---- lane forced on a player, keyed by player index: {3:"support"} ----
+let lanes=store.get("lanes",{});
+const laneI=l=>ROLES.findIndex(r=>r[0]===l);
+// two players forced on the same lane can only be on opposite teams
+const lanePairs=()=>Object.keys(lanes).flatMap((a,i,k)=>k.slice(i+1).filter(b=>lanes[a]===lanes[b]).map(b=>[+a,+b]));
+const apart=()=>[...sep,...lanePairs()];
+function seatTeam(team){const out=Array(5).fill(null);team.forEach(p=>{if(lanes[p])out[laneI(lanes[p])]=p;});const rest=shuffle(team.filter(p=>!lanes[p]));return out.map(p=>p??rest.pop());}
+// moves every forced player onto their lane, across teams when their own team's slot is taken by the same lane
+function seatForced(){for(const [p,l] of Object.entries(lanes)){const pi=+p,i=laneI(l),[t,j]=slotOfPi(pi);if(j===i)continue;
+  const s=lanes[T[t][i].pi]===l?T[other(t)][i]:T[t][i];T[t][j].pi=s.pi;s.pi=pi;}}
+// ---- champion types forced on a player, keyed by player index: ["role|top","cls|Tank"] ----
+// same rule as the filters: any value within a category, every category at once
+let forced=store.get("forced",{});
+Object.keys(forced).forEach(k=>{if(typeof forced[k]==="string")forced[k]=[forced[k]];}); // saved by the first version
+const fcHide=()=>$("#oForceHide").checked;
+function fcGroups(pi){const g={};(forced[pi]||[]).forEach(v=>{const [k,x]=v.split("|");(g[k]=g[k]||[]).push(x);});return Object.entries(g);}
+const fcText=pi=>fcGroups(pi).map(([k,xs])=>xs.map(x=>optL(k,x,OPTS[k].find(o=>o[0]===x)[1])).join(L(" ou "," or "))).join(", ");
+function fcFits(c,pi){return fcGroups(pi).every(([k,xs])=>xs.some(x=>k==="role"?c.r.includes(x):k==="cls"?c.c.includes(x):k==="dmg"?c.d===x:k==="range"?c.rg===x||c.rg==="Both":String(c.df)===x));}
+// a drawn champion that no longer fits its player goes back to the draw (locked ones stay)
+function dropMisfits(){[...T.blue,...T.red].forEach(s=>{if(s.champ&&!s.locked&&!fcFits(BY[s.champ],s.pi)){s.champ=null;s.note="";s.long="";s.nk="";}});}
+function renderForced(){
+  const a=$("#fcP").value,inPlay=j=>!FLEX||teamOf(+j)==="blue";
+  $("#fcP").innerHTML=players.map((_,j)=>inPlay(j)?`<option value="${j}">${esc(pname(j))}</option>`:"").join("");$("#fcP").value=a||0;if(!$("#fcP").value)$("#fcP").selectedIndex=0;
+  const cur=forced[$("#fcP").value]||[];
+  document.querySelectorAll("#fcT .chip").forEach(c=>c.setAttribute("aria-pressed",cur.includes(c.dataset.v)));
+  document.querySelectorAll("#fcL .chip").forEach(c=>c.setAttribute("aria-pressed",lanes[$("#fcP").value]===c.dataset.l));
+  const list=[...new Set([...Object.keys(lanes),...Object.keys(forced)])].filter(inPlay);
+  const text=pi=>[lanes[pi]&&L("joue ","plays ")+ROLE_LBL[lanes[pi]],forced[pi]&&"champion "+fcText(pi)].filter(Boolean).join(", ");
+  $("#fcList").innerHTML=list.length?list.map(pi=>`<span class="sp">${esc(pname(+pi))}${L(" : ",": ")}${esc(text(pi))}<button data-p="${pi}" aria-label="${L("Retirer","Remove")}">${L("Retirer","Remove")}</button></span>`).join(""):`<span class="hint" style="margin:0">${L("Personne pour le moment.","Nobody yet.")}</span>`;
+}
+$("#fcL").innerHTML=ROLES.map(([r,l])=>`<button class="chip" data-l="${r}">${l}</button>`).join("");
+$("#fcL").addEventListener("click",e=>{const ch=e.target.closest(".chip");if(!ch||busy)return;const pi=$("#fcP").value,l=ch.dataset.l;
+  if(lanes[pi]===l)delete lanes[pi];
+  else if(FLEX&&T.blue.some(s=>lanes[s.pi]===l)){toast(L("Un joueur a déjà ce poste","A player already has this role"));return;}
+  else if(Object.values(lanes).filter(x=>x===l).length>=2){toast(L("Deux joueurs ont déjà ce poste","Two players already have this role"));return;}
+  else lanes[pi]=l;
+  store.set("lanes",lanes);flipBoard(seatForced,450);dropMisfits();render5();renderSep();updateNext();});
+function renderFcChips(){$("#fcT").innerHTML=[["role",L("Poste du champion","Champion role")],["cls",L("Classe","Class")],["dmg",L("Dégâts","Damage")],["range",L("Portée","Range")],["diff",L("Difficulté","Difficulty")]].map(([k,l])=>`<div class="fc-g"><span>${l}</span><div class="chips">${OPTS[k].map(([v,t])=>`<button class="chip" data-v="${k}|${esc(v)}">${esc(optL(k,v,t))}</button>`).join("")}</div></div>`).join("");}
+$("#fcP").addEventListener("change",renderForced);
+$("#fcT").addEventListener("click",e=>{const ch=e.target.closest(".chip");if(!ch||busy)return;const pi=$("#fcP").value,v=ch.dataset.v,old=forced[pi];
+  const next=(old||[]).includes(v)?old.filter(x=>x!==v):[...(old||[]),v];
+  if(next.length)forced[pi]=next;else delete forced[pi];
+  if(!CH.some(c=>fcFits(c,pi))){forced[pi]=old;toast(L("Aucun champion ne correspond à ces choix","No champion matches these choices"));return;}
+  store.set("forced",forced);renderForced();dropMisfits();updateNext();});
+$("#fcList").addEventListener("click",e=>{const b=e.target.closest("[data-p]");if(!b)return;delete forced[b.dataset.p];delete lanes[b.dataset.p];store.set("forced",forced);store.set("lanes",lanes);renderForced();render5();});
+// ---- drag a player onto another to swap their places ----
+function slotOfPi(pi){for(const t of ["blue","red"])for(let i=0;i<5;i++)if(T[t][i].pi===pi)return [t,i];}
+function swapPlayers(a,b){
+  const [ta,ia]=slotOfPi(a),[tb,ib]=slotOfPi(b);
+  if((lanes[a]||lanes[b])&&ia!==ib){toast(pname(lanes[a]?a:b)+L(" a un poste imposé"," has a forced role"));return;}
+  flipBoard(()=>{T[ta][ia].pi=b;T[tb][ib].pi=a;},450);dropMisfits();render5();renderSep();updateNext();
+  const opp=(t,i)=>pname(T[other(t)][i].pi);
+  const moved=(p,t,i)=>FLEX?L(`${esc(pname(p))} passe ${lane(T[t][i])}.`,`${esc(pname(p))} moves to ${lane(T[t][i])}.`):L(`${esc(pname(p))} passe ${teamL(t).toLowerCase()} ${lane(T[t][i])}, face à ${esc(opp(t,i))}.`,`${esc(pname(p))} moves to ${teamL(t).toLowerCase()} ${lane(T[t][i])}, against ${esc(opp(t,i))}.`);
+  setVerdict(`<div class="ctx">${L("Échange de places","Players swapped")}</div><div class="vt">${esc(pname(a))} ${L("et","and")} ${esc(pname(b))}</div><div class="sub">${moved(a,tb,ib)} ${moved(b,ta,ia)}</div>`);
+  $("#stage").classList.remove("idle");beep(700,.08);
+  document.querySelectorAll(`[data-drag="${a}"],[data-drag="${b}"]`).forEach(e=>e.animate([{background:"rgba(255,210,63,.35)"},{background:"transparent"}],{duration:900}));
+}
+let drag=null;
+document.addEventListener("pointerdown",e=>{const el=e.target.closest("[data-drag]");if(!el||busy||e.button>0)return;
+  e.preventDefault();drag={pi:+el.dataset.drag,el,x:e.clientX,y:e.clientY,ghost:null,over:null};});
+document.addEventListener("pointermove",e=>{if(!drag)return;
+  if(!drag.ghost){if(Math.hypot(e.clientX-drag.x,e.clientY-drag.y)<6)return;
+    drag.ghost=document.createElement("div");drag.ghost.className="ghost";drag.ghost.textContent=pname(drag.pi);document.body.appendChild(drag.ghost);
+    document.querySelectorAll(`[data-drag="${drag.pi}"]`).forEach(x=>x.classList.add("drag-src"));document.body.classList.add("dragging");}
+  e.preventDefault();drag.ghost.style.left=e.clientX+"px";drag.ghost.style.top=e.clientY+"px";
+  const t=document.elementFromPoint(e.clientX,e.clientY),tg=t&&t.closest("[data-drag]");
+  const over=tg&&+tg.dataset.drag!==drag.pi?tg:null;
+  if(over!==drag.over){if(drag.over)drag.over.classList.remove("drop-over");if(over)over.classList.add("drop-over");drag.over=over;}
+},{passive:false});
+function endDrag(){if(!drag)return;const d=drag;drag=null;
+  if(d.ghost)d.ghost.remove();document.body.classList.remove("dragging");document.querySelectorAll(".drag-src,.drop-over").forEach(x=>x.classList.remove("drag-src","drop-over"));
+  if(d.over)swapPlayers(d.pi,+d.over.dataset.drag);}
+document.addEventListener("pointerup",endDrag);document.addEventListener("pointercancel",()=>{if(drag)drag.over=null;endDrag();});
+function renderBoard(){
+  const br=FLEX?[]:sepBroken();
+  const gap=anyRank()?Math.abs(teamAvg("blue")-teamAvg("red")):0;
+  const dragTip=L("Glisse sur un autre joueur pour échanger leurs places","Drag onto another player to swap their places");
+  const gapTxt=L(gap.toFixed(1).replace(".",","),gap.toFixed(1))+" division"+(gap>=2?"s":"");
+  $("#board").innerHTML=(anyRank()&&!FLEX?`<div class="board-gap ${gap>1?"warn":""}">${L("Écart entre les équipes : ","Gap between teams: ")}${gap<0.05?L("aucun","none"):gapTxt}${gap>1?L(". Clique sur « Mélanger les équipes » pour rééquilibrer.",". Click “Shuffle teams” to rebalance."):""}</div>`:"")+(br.length?`<div class="board-warn">${br.map(([a,b])=>`${esc(pname(a))} ${L("et","and")} ${esc(pname(b))}`).join(", ")} ${L(br.length>1?"sont":"est",br.length>1?"are":"is")} ${L("dans la même équipe. Mélange les équipes pour corriger.","on the same team. Shuffle the teams to fix it.")}</div>`:"")+["blue","red"].map(t=>`<div class="bcol ${t}"><div class="bh">${FLEX?L("Ton équipe","Your team"):teamL(t)}${anyRank()?`<small>${L("moyenne ","average ")}${scoreLabel(teamAvg(t))}</small>`:""}</div>${T[t].map(s=>`<div class="pchip ${t}" data-p="${s.pi}" data-drag="${s.pi}" title="${dragTip}"><svg class="grip" aria-hidden="true"><use href="#i-grip"/></svg><span>${F.mode==="aram"?"":ROLE_LBL[s.role]}</span>${esc(pname(s.pi))}${ranks[s.pi]?`<em class="rk">${rankL(ranks[s.pi])}</em>`:""}</div>`).join("")}</div>`).join("");
+}
+function flipBoard(mutate,ms){
+  const r0=new Map([...document.querySelectorAll(".pchip")].map(e=>[e.dataset.p,e.getBoundingClientRect()]));
+  mutate();renderBoard();
+  document.querySelectorAll(".pchip").forEach((e,k)=>{const a=r0.get(e.dataset.p),b=e.getBoundingClientRect();if(!a)return;
+    e.animate([{transform:`translate(${a.left-b.left}px,${a.top-b.top}px)`},{transform:"none"}],{duration:ms,easing:"cubic-bezier(.3,.8,.25,1)"});});
+}
+function assign(order){[...T.blue,...T.red].forEach((s,k)=>s.pi=order[k]);}
+async function shuffleAnim(within){
+  if(busy)return;setBusy(true,false);
+  const cur=[...T.blue,...T.red].map(s=>s.pi);
+  const perm=()=>within?[...shuffle(cur.slice(0,5)),...shuffle(cur.slice(5))]:shuffle(cur);
+  const fin=balancedOrder(within);if(!fin){setBusy(false);toast(L("Aucune répartition ne respecte les paires à séparer et les postes imposés","No split respects the pairs to separate and the forced roles"));return;}
+  const fast=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  for(let k=0;k<(fast?0:4);k++){flipBoard(()=>assign(perm()),260);beep(400+k*80,.04);await sleep(280);}
+  flipBoard(()=>assign(fin),700);beep(880,.15,.06);
+  await sleep(fast?0:700);dropMisfits();render5();renderSep();
+  document.querySelectorAll(".slot .pn").forEach(e=>e.animate([{color:"var(--hi)"},{color:"var(--mute)"}],{duration:900}));
+  setVerdict(`<div class="ctx">${within?L("Postes mélangés","Roles shuffled"):L("Équipes mélangées","Teams shuffled")}</div><div class="vt">${FLEX?L("Nouveaux postes","New roles"):esc(T.blue.map(s=>pname(s.pi)).slice(0,2).join(", "))+L("… chez les bleus","… on blue")}</div>`);
+  setBusy(false);updateNext();
+}
+$("#shuffleTeams").onclick=()=>shuffleAnim(false);
+$("#shuffleRoles").onclick=()=>shuffleAnim(true);
+
+function usedNames(except){const s=new Set();["blue","red"].forEach(t=>T[t].forEach(sl=>{if(sl.champ&&sl!==except)s.add(sl.champ);}));return s;}
+function candidates(slot,team,raw){
+  const fr=!raw&&(forced[slot.pi]||[]).some(v=>v.startsWith("role|")); // a forced role replaces the player's lane
+  const pm=F.mode==="aram"||fr?"any":$("#oPool").value,strict=pm!=="any",used=usedNames(slot),unique=$("#oUnique").checked;
+  const mine=new Set(T[team].filter(s=>s!==slot&&s.champ).map(s=>s.champ));
+  const free=c=>!mine.has(c.n)&&!(unique&&used.has(c.n));
+  const base=pool({ignoreRole:true}).filter(c=>{
+    if(pm==="role"&&!c.r.includes(slot.role))return false;if(pm==="main"&&c.r[0]!==slot.role)return false;
+    if(!strict&&F.mode!=="aram"&&F.role.length&&!c.r.some(r=>F.role.includes(r)))return false;
+    return free(c);});
+  if(raw||!forced[slot.pi])return base;
+  // the forced type wins: give up the lane first, then the filters and the pool
+  const fit=c=>fcFits(c,slot.pi)&&free(c),a=base.filter(fit);if(a.length)return a;
+  const b=pool({ignoreRole:true}).filter(fit);return b.length?b:CH.filter(fit);
+}
+function drawSlot(team,i){const sl=T[team][i];sl.note="";sl.long="";sl.nk="";const c=candidates(sl,team);sl.champ=c.length?pick(c).n:null;if(!c.length){sl.note=()=>L("Aucun champion possible avec ces filtres","No champion fits these filters");sl.nk="warn";}return (forced[sl.pi]&&fcHide()?candidates(sl,team,true):c).map(x=>x.n);}
+/** options for slot (t,i) against the champion facing it. mode "counter" = champions that beat it */
+function options(t,i,mode){
+  const src=T[other(t)][i].champ;if(!src)return [];
+  const on=F.mode==="aram"?null:T[t][i].role;
+  const list=mode==="counter"?losesTo(src,on):beats(src,on);
+  const slot=T[t][i],used=usedNames(slot),unique=$("#oUnique").checked,mine=new Set(T[t].filter(s=>s!==slot&&s.champ).map(s=>s.champ));
+  return list.filter(([n])=>fcFits(BY[n],slot.pi)).map(([n,w])=>{const c=BY[n];let why="";
+    if(mine.has(n)||(unique&&used.has(n)))why=L("déjà pris","already taken");else if(excluded.has(n))why=L("hors pool","not in pool");
+    const off=F.mode!=="aram"&&!c.r.includes(slot.role);
+    return {n,w,why,off};});
+}
+const lane=s=>F.mode==="aram"?"ARAM":ROLE_LBL[s.role];
+function slotHTML(t,i){const s=T[t][i],c=s.champ&&!s.state.includes("pending")?BY[s.champ]:null;
+  return `<div class="slot ${s.state} ${s.locked?"locked":""} ${isNext(t,i)?"next":""}" id="sl-${t}-${i}">
+    <div class="pic">${c?img(c.n):'<span class="q">?</span>'}</div>
+    <div style="min-width:0"><div class="lane">${lane(s)}${isNext(t,i)?` <span class="nx">${L("au tour de","up next")}</span>`:""}</div><div class="cn">${c?esc(label(c.n)):(s.state.includes("pending")?L("En attente…","Waiting…"):L("Pas encore tiré","Not drawn yet"))}</div><div class="pn"><span class="dragname" data-drag="${s.pi}" title="${L("Glisse sur un autre joueur pour échanger leurs places","Drag onto another player to swap their places")}"><svg class="grip" aria-hidden="true"><use href="#i-grip"/></svg>${esc(pname(s.pi))}</span>${ranks[s.pi]?` <span class="rk">${rankL(ranks[s.pi])}</span>`:""}${forced[s.pi]&&!fcHide()?` <span class="rk">${L("Imposé : ","Forced: ")}${esc(fcText(s.pi))}</span>`:""}</div><div class="note ${s.nk}" title="${esc(txt(s.long||s.note))}">${s.note&&(c||s.nk==="warn")?esc(txt(s.note)):""}</div></div>
+    <div class="acts">
+      <button class="act" data-a="roll" data-t="${t}" data-i="${i}"><svg><use href="#i-dice"/></svg>${s.champ?L("Relancer","Reroll"):L("Tirer","Draw")}</button>
+      <button class="act" data-a="lock" data-t="${t}" data-i="${i}" aria-pressed="${s.locked}"><svg><use href="#i-lock"/></svg>${L("Garder","Keep")}</button>
+      <button class="act" data-a="counter" data-t="${t}" data-i="${i}" title="${L("Choisir pour le joueur d'en face un champion qui bat celui-ci","Pick a champion that beats this one for the opposing player")}"><svg><use href="#i-sword"/></svg>Counter</button>
+      <button class="act" data-a="target" data-t="${t}" data-i="${i}" title="${L("Choisir pour le joueur d'en face un champion que celui-ci bat","Pick a champion that this one beats for the opposing player")}"><svg><use href="#i-target"/></svg>Prey</button>
+      ${buildOn()?`<button class="act build" data-a="build" data-t="${t}" data-i="${i}" ${s.champ&&!s.state.includes("pending")?"":"disabled"}><svg><use href="#i-scroll"/></svg>${L("Build et runes","Build and runes")}</button>`:""}
+    </div></div>`;}
+function render5(){ensureBuilds();["blue","red"].forEach(t=>{$("#"+t+"Slots").innerHTML=T[t].map((_,i)=>slotHTML(t,i)).join("");});}
+function paintSlot(t,i){ensureBuilds();const el=$(`#sl-${t}-${i}`);if(el)el.outerHTML=slotHTML(t,i);}
+function ctxLine(t,i){const s=T[t][i];return `${FLEX?"":`<span class="${t==="blue"?"bl":"rd"}">${teamL(t)}</span>, `}${lane(s)}, ${esc(pname(s.pi))}`;}
+function nextSlot(){return ORDER.find(([t,i])=>(!FLEX||t==="blue")&&!T[t][i].champ&&!T[t][i].locked)||null;}
+function isNext(t,i){const n=nextSlot();return !busy&&n&&n[0]===t&&n[1]===i;}
+let pk=null; // {t,i,mode,manual}
+function updateNext(){
+  render5();const n=nextSlot();
+  $("#drawNext").textContent=n?L("Tirer le prochain champion","Draw the next champion"):L("Tout le monde a son champion","Everyone has a champion");
+  $("#drawNext").disabled=busy||!n;$("#drawRest").disabled=busy||!n;
+  if(pk&&pk.manual&&!T[pk.t][pk.i].champ){renderPicker();return;}
+  if(n&&$("#oAutoPick").checked&&T[other(n[0])][n[1]].champ){pk={t:n[0],i:n[1],mode:(pk&&!pk.manual&&pk.mode)||"counter",manual:false};}else pk=null;
+  renderPicker();
+  if(!busy&&n&&$("#stage").classList.contains("idle"))setVerdict(`<div class="ctx">${L("Prochain tirage","Next draw")}</div><div class="vt">${ctxLine(n[0],n[1])}</div>`);
+}
+function renderPicker(){
+  const box=$("#picker");if(!pk){box.hidden=true;return;}
+  const {t,i,mode}=pk,o=other(t),src=T[o][i].champ;if(!src){box.hidden=true;return;}
+  const sl=T[t][i].role,opts=options(t,i,mode),dl=dataLane(src,F.mode==="aram"?null:sl);
+  box.hidden=false;
+  box.innerHTML=`<div class="pk-head">${img(src)}<div><div class="ctx">${esc(pname(T[t][i].pi))} (${teamL(t)}, ${lane(T[t][i])}) ${L("joue contre","plays against")}</div><h3>${esc(label(src))}</h3></div>
+    <div class="seg" role="group" aria-label="${L("Type de choix","Type of choice")}"><button data-m="counter" aria-pressed="${mode==="counter"}">${L("Ses counters","Its counters")}</button><button data-m="target" aria-pressed="${mode==="target"}">${L("Ses preys","Its preys")}</button></div></div>
+    <p class="hint" style="margin:0 0 10px">${pkHint(src,sl,dl,mode)}</p>
+    <div class="pk-grid">${opts.length?opts.map(x=>`<button class="pk-card" data-n="${esc(x.n)}" ${x.why?"disabled":""}>${img(x.n)}<span class="nm">${esc(label(x.n))}</span><span class="wr ${mode==="counter"?"c":"t"}">${esc(label(src))} ${pct(x.w)}</span>${x.why?`<span class="tg">${x.why}</span>`:x.off?`<span class="tg">${L("autre poste","other role")}</span>`:""}</button>`).join(""):`<p class="hint">${L("Pas de donnée de matchup pour ce champion.","No matchup data for this champion.")}</p>`}</div>
+    <div class="row" style="margin-top:12px">
+      <button class="btn" data-k="rand" ${opts.some(x=>!x.why)?"":"disabled"}>${mode==="counter"?L("Un de ces counters au hasard","One of these counters at random"):L("Une de ces preys au hasard","One of these preys at random")}</button>
+      <button class="btn" data-k="normal">${L("Tirage normal à la place","Normal draw instead")}</button>
+      <button class="btn sm" data-k="close">${L("Fermer","Close")}</button>
+    </div>`;
+}
+function pkHint(src,sl,dl,mode){const n=esc(label(src)),aram=F.mode==="aram";
+  return L(`Matchups de ${n} en ${ROLE_LBL[dl]} contre des ${ROLE_LBL[dl]}, LoLalytics 26.21.${!aram&&dl!==sl?` Pas assez de parties de ${n} en ${ROLE_LBL[sl]} sur ce patch, ces chiffres viennent de son poste en ${ROLE_LBL[dl]}.`:""} ${mode==="counter"?`Champions contre qui ${n} gagne le moins.`:`Champions que ${n} bat le plus souvent.`} Le pourcentage est son taux de victoire face à eux.`,
+    `${n} matchups as ${ROLE_LBL[dl]} against other ${ROLE_LBL[dl]} players, LoLalytics 26.21.${!aram&&dl!==sl?` Not enough ${n} ${ROLE_LBL[sl]} games on this patch, so these numbers come from ${ROLE_LBL[dl]}.`:""} ${mode==="counter"?`Champions ${n} wins least against.`:`Champions ${n} beats most often.`} The percentage is the win rate of ${n} against them.`);}
+$("#picker").addEventListener("click",async e=>{
+  if(busy||!pk)return;const b=e.target.closest("button");if(!b)return;
+  if(b.dataset.m){pk.mode=b.dataset.m;renderPicker();return;}
+  const {t,i,mode}=pk,src=T[other(t)][i].champ,s=T[t][i];
+  if(b.dataset.k==="close"){pk=null;renderPicker();return;}
+  if(b.dataset.k==="normal"){pk=null;renderPicker();return drawOne(t,i);}
+  const opts=options(t,i,mode).filter(x=>!x.why);
+  let chosen,fast=false;
+  if(b.dataset.n){chosen=opts.find(x=>x.n===b.dataset.n);fast=true;}
+  else if(b.dataset.k==="rand")chosen=pick(opts);
+  if(!chosen)return;
+  s.locked=false;s.champ=chosen.n;const wv=100-chosen.w,kind=mode==="counter"?"Counter":"Prey";
+  s.note=()=>L(`${kind}, ${pct(wv)} prévus`,`${kind}, ${pct(wv)} expected`);s.long=()=>L(`${kind} ${de(src)}, ${pct(wv)} de victoires prévues`,`${kind} ${mode==="counter"?"to":"of"} ${label(src)}, ${pct(wv)} expected win rate`);s.nk=mode==="counter"?"c":"t";
+  pk=null;renderPicker();setBusy(true,false);
+  await reveal(t,i,opts.map(x=>x.n),fast?500:null);setBusy(false);updateNext();
+});
+async function reveal(t,i,decoys,dur){
+  const s=T[t][i];s.state="pending active";paintSlot(t,i);
+  $(`#sl-${t}-${i}`).scrollIntoView({block:"nearest",behavior:skipAll?"auto":"smooth"});
+  if(s.champ)await spin(s.champ,decoys,`<div class="ctx">${ctxLine(t,i)}</div><div class="vt">${esc(label(s.champ))}</div>${s.note?`<div class="sub">${esc(txt(s.long||s.note))}</div>`:""}`,`<div class="ctx">${ctxLine(t,i)}</div><div class="vt">…</div>`,dur);
+  s.state="landed";paintSlot(t,i);if(!skipAll)await sleep(250);s.state="";
+}
+async function drawOne(t,i){setBusy(true,false);const d=drawSlot(t,i);await reveal(t,i,d);setBusy(false);updateNext();}
+$("#drawNext").onclick=()=>{if(busy)return;const n=nextSlot();if(!n)return;pk=null;drawOne(n[0],n[1]);};
+$("#drawRest").onclick=async()=>{if(busy)return;pk=null;renderPicker();setBusy(true,true);let n;while((n=nextSlot())){const d=drawSlot(n[0],n[1]);await reveal(n[0],n[1],d);}setBusy(false);updateNext();
+  setVerdict(`<div class="ctx">${L("Tirage terminé","Draw complete")}</div><div class="vt">${L("Bonne game","Good game")}</div><div class="sub">${L("Relance une ligne si un champion ne plaît pas.","Reroll a line if you don't like a champion.")}</div>`);};
+$("#clearChamps").onclick=()=>{if(busy)return;[...T.blue,...T.red].forEach(s=>{if(!s.locked){s.champ=null;s.note="";s.long="";}});pk=null;$("#stage").classList.add("idle");updateNext();};
+document.querySelector(".teams").addEventListener("click",async e=>{
+  const b=e.target.closest(".act");if(!b||busy)return;const t=b.dataset.t,i=+b.dataset.i,a=b.dataset.a,s=T[t][i];
+  if(a==="lock"){s.locked=!s.locked;updateNext();return;}
+  if(a==="build"){if(s.champ){ensureBuilds();openBuild(s.build,pname(s.pi),{t,i});}return;}
+  if(a==="roll"){if(s.locked){toast(L("Ce champion est gardé. Retire « Garder » pour le relancer","This champion is kept. Turn off “Keep” to reroll it"));return;}pk=null;renderPicker();return drawOne(t,i);}
+  if(!s.champ){toast(L("Tire d'abord un champion sur cette ligne","Draw a champion on this line first"));return;}
+  const ot=other(t);if(T[ot][i].locked){toast(L("Le champion d'en face est gardé","The opposing champion is kept"));return;}
+  pk={t:ot,i,mode:a,manual:true};renderPicker();$("#picker").scrollIntoView({block:"nearest",behavior:"smooth"});
+});
+$("#copyTeam").onclick=()=>{const line=t=>T[t].map(s=>`${F.mode==="aram"?"":ROLE_LBL[s.role]+" : "}${pname(s.pi)}, ${s.champ?label(s.champ):"?"}`).join("\n");copy(FLEX?line("blue"):`${L("Équipe bleue","Blue team")}\n${line("blue")}\n\n${L("Équipe rouge","Red team")}\n${line("red")}`);};
+["oAutoPick","oUnique","oPool"].forEach(id=>$("#"+id).addEventListener("change",()=>{showRoleCounts();updateNext();}));
+const OPT_IDS=["oAutoPick","oUnique","oBalance","oDuel","oBuild","oBuildAdapt","oForceHide","sound","cUseFilters"],savedOpts=store.get("opts",{});
+$("#oForceHide").addEventListener("change",()=>render5());
+["oPool","speed"].forEach(id=>{const v=store.get(id,null);if(v!=null)$("#"+id).value=v;$("#"+id).addEventListener("change",e=>store.set(id,e.target.value));});
+OPT_IDS.forEach(id=>{if(id in savedOpts)$("#"+id).checked=savedOpts[id];$("#"+id).addEventListener("change",()=>{store.set("opts",Object.fromEntries(OPT_IDS.map(k=>[k,$("#"+k).checked])));renderBoard();});});
+function showRoleCounts(){const pm=$("#oPool").value,p=pool({ignoreRole:true});
+  $("#roleCounts").textContent=pm==="any"?L(`Chaque poste peut tomber sur n'importe lequel des ${p.length} champions du pool.`,`Each role can land on any of the ${p.length} champions in the pool.`):L("Champions possibles par poste : ","Possible champions per role: ")+ROLES.map(([r,l])=>`${l} ${p.filter(c=>pm==="main"?c.r[0]===r:c.r.includes(r)).length}`).join(", ")+".";}
+
+// ---------- random builds (optional) ----------
+const BD=DATA.build;const BI={};
+for(const [k,b64] of Object.entries(BD.icons)){const bin=atob(b64),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);BI[k]=URL.createObjectURL(new Blob([u],{type:"image/webp"}));}
+delete BD.icons;
+const SHARDS=[[["StatModsAdaptiveForceIcon","Force adaptative"],["StatModsAttackSpeedIcon","Vitesse d'attaque"],["StatModsCDRScalingIcon","Accélération de compétence"]],
+  [["StatModsAdaptiveForceIcon","Force adaptative"],["StatModsMovementSpeedIcon","Vitesse de déplacement"],["StatModsHealthScalingIcon","PV croissants"]],
+  [["StatModsHealthPlusIcon","PV"],["StatModsTenacityIcon","Ténacité et résistance aux ralentissements"],["StatModsHealthScalingIcon","PV croissants"]]];
+const SHARD_EN={StatModsAdaptiveForceIcon:"Adaptive Force",StatModsAttackSpeedIcon:"Attack Speed",StatModsCDRScalingIcon:"Ability Haste",StatModsMovementSpeedIcon:"Move Speed",StatModsHealthScalingIcon:"Scaling Health",StatModsHealthPlusIcon:"Health",StatModsTenacityIcon:"Tenacity and Slow Resist"};
+const shardN=([k,n])=>L(n,SHARD_EN[k]);
+const RUNE={};BD.trees.forEach(t=>{RUNE[t.id]={n:t.n,tree:t};t.rows.forEach(r=>r.forEach(x=>RUNE[x.id]={n:x.n}));});
+const runeN=id=>L(RUNE[id].n,BD.en.runes[id]||RUNE[id].n);
+const spellN=s=>L(BD.spells[s].n,BD.en.spells[s]||BD.spells[s].n);
+const itemName=id=>{const fr=(BD.items[id]||BD.boots[id]||BD.sup[id]||BD.jg[id]||{n:"?"}).n;return L(fr,BD.en.items[id]||fr);};
+const TAGS={AD:["Damage","CriticalStrike","AttackSpeed","ArmorPenetration","LifeSteal","OnHit"],AP:["SpellDamage","MagicPenetration"],TANK:["Health","Armor","SpellBlock"],SUP:["ManaRegen","Aura","HealthRegen","CooldownReduction"]};
+function genBuild(n,role){
+  const c=BY[n],adapt=$("#oBuildAdapt").checked;
+  let tags=null;
+  if(adapt){tags=new Set(c.d==="AP"?TAGS.AP:c.d==="AD"?TAGS.AD:[...TAGS.AD,...TAGS.AP]);if(c.c.includes("Tank"))TAGS.TANK.forEach(x=>tags.add(x));if(c.c.includes("Support")||role==="support")TAGS.SUP.forEach(x=>tags.add(x));}
+  let pool_=Object.keys(BD.items).filter(id=>!tags||BD.items[id].t.some(x=>tags.has(x)));
+  const names=new Set(),items=[];
+  const sup=role==="support"&&F.mode!=="aram";
+  if(sup)items.push(pick(Object.keys(BD.sup)));
+  if(c.id!=="Cassiopeia")items.push(pick(Object.keys(BD.boots)));
+  for(const id of shuffle(pool_)){if(items.length>=6)break;if(names.has(BD.items[id].n))continue;names.add(BD.items[id].n);items.push(id);}
+  const jg=role==="jungle"&&F.mode!=="aram"?pick(Object.keys(BD.jg)):null;
+  const sp=Object.keys(BD.spells).filter(s=>s!=="SummonerSmite");
+  const spells=jg?["SummonerSmite",pick(sp)]:shuffle(sp).slice(0,2);
+  const [pt,st]=shuffle(BD.trees);
+  const prim=[pick(pt.rows[0]).id,...[1,2,3].map(r=>pick(pt.rows[r]).id)];
+  const rows=shuffle([1,2,3]).slice(0,2).sort();
+  const sec=rows.map(r=>pick(st.rows[r]).id);
+  return {c:n,role,spells,jg,items,pt:pt.id,prim,st:st.id,sec,sh:[0,1,2].map(()=>Math.floor(Math.random()*3)),sk:shuffle(["Q","W","E"]).join("")};
+}
+const buildOn=()=>$("#oBuild").checked;
+function ensureBuilds(){if(!buildOn())return;["blue","red"].forEach(t=>T[t].forEach(s=>{if(s.champ&&(!s.build||s.build.c!==s.champ||s.build.role!==s.role))s.build=genBuild(s.champ,s.role);}));}
+// link: only letters, digits and hyphens, so it stays a plain URL hash
+function encodeBuild(b,player){const nm=(player||"").normalize("NFD").replace(/[^A-Za-z0-9]/g,"").slice(0,16);
+  const SK=Object.keys(BD.spells);return ["build",BY[b.c].id,b.role,b.spells.map(x=>SK.indexOf(x)).join("x"),b.jg||"0",b.items.join("x"),b.pt+"x"+b.prim.join("x"),b.st+"x"+b.sec.join("x"),b.sh.join(""),b.sk,nm].join("-");}
+function decodeBuild(h){const p=h.split("-");if(p[0]!=="build"||p.length<10)return null;
+  const c=CH.find(x=>x.id===p[1]);if(!c)return null;const pr=p[6].split("x").map(Number),se=p[7].split("x").map(Number);
+  const SK=Object.keys(BD.spells);return {b:{c:c.n,role:p[2],spells:p[3].split("x").map(i=>SK[+i]),jg:p[4]==="0"?null:p[4],items:p[5].split("x"),pt:pr[0],prim:pr.slice(1),st:se[0],sec:se.slice(1),sh:p[8].split("").map(Number),sk:p[9]},player:p[10]||""};}
+function baseURL(){return location.href.split(/[?#]/)[0];}
+const linkFor=(b,player)=>baseURL()+"#"+encodeBuild(b,player);
+const bimg=(k,alt,cls="")=>`<img class="${cls}" src="${BI[k]||""}" alt="${esc(alt)}" title="${esc(alt)}">`;
+function buildHTML(b,player){
+  const sh=b.sh.map((v,r)=>SHARDS[r][v]);
+  const start=b.jg?`<div class="bi start">${bimg("i_"+b.jg,itemName(b.jg))}<span>${esc(itemName(b.jg))}</span><em>${L("Départ","Start")}</em></div>`:"";
+  return `<div class="bm-head">${img(b.c)}<div><div class="ctx">${esc(player||"")}${player?", ":""}${ROLE_LBL[b.role]||""}</div><div class="vt">${esc(label(b.c))}</div></div></div>
+  <div class="bm-sec"><h4>${L("Sorts d'invocateur","Summoner spells")}</h4><div class="bm-row">${b.spells.map(s=>`<div class="bi">${bimg("s_"+s,spellN(s))}<span>${esc(spellN(s))}</span></div>`).join("")}</div></div>
+  <div class="bm-sec"><h4>Runes</h4><div class="bm-runes">
+    <div class="tree"><div class="tn">${bimg("r_"+b.pt,runeN(b.pt),"tree-ic")}${esc(runeN(b.pt))}</div><div class="ks">${bimg("r_"+b.prim[0],runeN(b.prim[0]))}<span>${esc(runeN(b.prim[0]))}</span></div>${b.prim.slice(1).map(id=>`<div class="rn">${bimg("r_"+id,runeN(id))}<span>${esc(runeN(id))}</span></div>`).join("")}</div>
+    <div class="tree"><div class="tn">${bimg("r_"+b.st,runeN(b.st),"tree-ic")}${esc(runeN(b.st))}<em>${L("secondaire","secondary")}</em></div>${b.sec.map(id=>`<div class="rn">${bimg("r_"+id,runeN(id))}<span>${esc(runeN(id))}</span></div>`).join("")}
+      <div class="shards">${sh.map(x=>`<div class="rn sm">${bimg("m_"+x[0],shardN(x))}<span>${esc(shardN(x))}</span></div>`).join("")}</div></div>
+  </div></div>
+  <div class="bm-sec"><h4>${L("Objets","Items")}</h4><div class="bm-items">${start}${b.items.map(id=>`<div class="bi">${bimg("i_"+id,itemName(id))}<span>${esc(itemName(id))}</span></div>`).join("")}</div></div>
+  <div class="bm-sec"><h4>${L("Ordre de montée des sorts","Skill order")}</h4><div class="skills">${b.sk.split("").map(k=>`<b>${k}</b>`).join(`<i>${L("puis","then")}</i>`)}</div></div>`;
+}
+function buildText(b,player){const sh=b.sh.map((v,r)=>shardN(SHARDS[r][v])),c=L(" : ",": ");
+  return `${player?player+", ":""}${label(b.c)} (${ROLE_LBL[b.role]||""})\n${L("Sorts","Spells")}${c}${b.spells.map(spellN).join(", ")}\nRunes${c}${runeN(b.pt)} (${b.prim.map(runeN).join(", ")}) + ${runeN(b.st)} (${b.sec.map(runeN).join(", ")}) + ${sh.join(", ")}\n${L("Objets","Items")}${c}${[b.jg,...b.items].filter(Boolean).map(itemName).join(", ")}\n${L("Montée","Skill order")}${c}${b.sk.split("").join(L(" puis "," then "))}`;}
+let bmCtx=null; // {t,i} when opened from a slot, null for a shared link
+function openBuild(b,player,ctx){bmCtx=ctx;$("#bmBody").innerHTML=buildHTML(b,player);$("#bmReroll").hidden=!ctx;$("#bm").hidden=false;$("#bm").dataset.player=player||"";$("#bm")._b=b;$("#bmClose").focus();}
+function closeBuild(){$("#bm").hidden=true;if(location.hash.startsWith("#build-"))history.replaceState(null,"",location.pathname+location.search);}
+$("#bmClose").onclick=closeBuild;$("#bm").addEventListener("click",e=>{if(e.target.id==="bm")closeBuild();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("#bm").hidden)closeBuild();});
+$("#bmReroll").onclick=()=>{if(!bmCtx)return;const s=T[bmCtx.t][bmCtx.i];s.build=genBuild(s.champ,s.role);openBuild(s.build,pname(s.pi),bmCtx);beep(800,.08);};
+const blocked=()=>toast(L("Le navigateur a bloqué la copie","The browser blocked copying"));
+$("#bmLink").onclick=async()=>{try{await navigator.clipboard.writeText(linkFor($("#bm")._b,$("#bm").dataset.player));toast(L("Lien du build copié","Build link copied"));}catch(e){blocked();}};
+$("#bmText").onclick=async()=>{try{await navigator.clipboard.writeText(buildText($("#bm")._b,$("#bm").dataset.player));toast(L("Build copié en texte","Build copied as text"));}catch(e){blocked();}};
+$("#copyBuilds").onclick=async()=>{ensureBuilds();const lines=[];(FLEX?["blue"]:["blue","red"]).forEach(t=>{if(!FLEX)lines.push(t==="blue"?L("Équipe bleue","Blue team"):L("Équipe rouge","Red team"));T[t].forEach(s=>{if(s.champ)lines.push(`${pname(s.pi)} (${lane(s)}, ${label(s.champ)}) : ${linkFor(s.build,pname(s.pi))}`);});lines.push("");});
+  try{await navigator.clipboard.writeText(lines.join("\n").trim());toast(L("Liens des builds copiés","Build links copied"));}catch(e){blocked();}};
+function syncBuildUI(){$("#copyBuilds").hidden=!buildOn();$("#oBuildAdapt").closest("label").hidden=!buildOn();}
+$("#oBuild").addEventListener("change",()=>{syncBuildUI();render5();});
+$("#oBuildAdapt").addEventListener("change",()=>{[...T.blue,...T.red].forEach(s=>s.build=null);render5();});
+function routeHash(){const h=decodeURIComponent(location.hash.slice(1));if(!h.startsWith("build-"))return;const d=decodeBuild(h);if(!d){toast(L("Ce lien de build est illisible","This build link can't be read"));return;}openBuild(d.b,d.player,null);}
+window.addEventListener("hashchange",routeHash);
+
+// ---------- counters tab ----------
+let cChamp=null,cLane=null;
+function setCounterChamp(n){cChamp=n;cLane=dataLane(n,null);$("#cSearch").value=label(n);renderCLanes();renderCounterLists();}
+function renderCLanes(){const ls=lanesWithData(cChamp);$("#cLanes").innerHTML=`<span class="hint" style="margin:0">${L("Poste :","Role:")}</span>`+ls.map(l=>`<button class="chip" data-l="${l}" aria-pressed="${l===cLane}">${ROLE_LBL[l]}</button>`).join("");}
+$("#cLanes").addEventListener("click",e=>{const b=e.target.closest("[data-l]");if(!b)return;cLane=b.dataset.l;renderCLanes();renderCounterLists();});
+function renderCounterLists(hit){
+  if(!cChamp){$("#cLose").innerHTML=$("#cWin").innerHTML=`<p class="hint" style="margin:0">${L("Choisis un champion au-dessus.","Pick a champion above.")}</p>`;return;}
+  const row=(n,w,k)=>`<div class="li ${n===hit?"hit":""}">${img(n)}<span>${esc(label(n))}</span><span class="wr ${k}">${pct(w)}</span></div>`;
+  const lost=losesTo(cChamp,cLane),W=beats(cChamp,cLane),dl=dataLane(cChamp,cLane);
+  const none=`<p class="hint">${L("Pas de donnée.","No data.")}</p>`;
+  $("#cLose").innerHTML=(lost.length?lost.map(([n,w])=>row(n,w,"c")).join(""):none)+`<p class="hint">${L(`Pourcentage de victoires de ${esc(label(cChamp))} en ${ROLE_LBL[dl]} contre chaque adversaire du même poste.`,`Win rate of ${esc(label(cChamp))} as ${ROLE_LBL[dl]} against each opponent in the same role.`)}</p>`;
+  $("#cWin").innerHTML=W.length?W.map(([n,w])=>row(n,w,"t")).join(""):none;
+}
+async function cRoll(mode){
+  if(busy)return;if(!cChamp){toast(L("Choisis d'abord un champion","Pick a champion first"));return;}
+  let list=mode==="counter"?losesTo(cChamp,cLane):beats(cChamp,cLane);
+  if($("#cUseFilters").checked){const ok=new Set(pool().map(c=>c.n));list=list.filter(([n])=>ok.has(n));}
+  list=list.filter(([n])=>!excluded.has(n));
+  if(!list.length){toast(L("Aucun résultat. Décoche « Respecter mes filtres »","No result. Untick “Use my filters”"));return;}
+  const [n,w]=pick(list);setBusy(true,false);
+  const me=esc(label(cChamp)),meDe=esc(de(cChamp));
+  await spin(n,list.map(x=>x[0]),`<div class="ctx">${mode==="counter"?L("Counter "+meDe,"Counter to "+me):L("Prey "+meDe,"Prey of "+me)}</div><div class="vt">${esc(label(n))}</div><div class="sub">${L(`${me} gagne ${pct(w)} de ses parties contre lui`,`${me} wins ${pct(w)} of games against this pick`)}</div>`,`<div class="ctx">${mode==="counter"?L("On cherche qui bat "+me,"Looking for who beats "+me):L("On cherche qui "+me+" bat","Looking for who "+me+" beats")}</div><div class="vt">…</div>`);
+  renderCounterLists(n);setBusy(false);
+}
+$("#cRollCounter").onclick=()=>cRoll("counter");
+$("#cRollTarget").onclick=()=>cRoll("target");
+$("#cRandom").onclick=()=>setCounterChamp(pick(pool()).n);
+const sIn=$("#cSearch"),sBox=$("#cSugg");let sIdx=0,sList=[];
+sIn.addEventListener("input",()=>{const q=norm(sIn.value);sList=q?CH.filter(c=>norm(c.fr).includes(q)||norm(c.n).includes(q)).sort((a,b)=>norm(label(a.n)).indexOf(q)-norm(label(b.n)).indexOf(q)).slice(0,8):[];sIdx=0;drawSugg();});
+sIn.addEventListener("keydown",e=>{if(!sList.length)return;if(e.key==="ArrowDown"){sIdx=(sIdx+1)%sList.length;drawSugg();e.preventDefault();}if(e.key==="ArrowUp"){sIdx=(sIdx-1+sList.length)%sList.length;drawSugg();e.preventDefault();}if(e.key==="Enter"){setCounterChamp(sList[sIdx].n);sList=[];drawSugg();}});
+sIn.addEventListener("blur",()=>setTimeout(()=>{sList=[];drawSugg();},150));
+function drawSugg(){sBox.style.display=sList.length?"block":"none";sBox.innerHTML=sList.map((c,i)=>`<button type="button" class="${i===sIdx?"act-s":""}" data-n="${esc(c.n)}">${img(c.n,false)}${esc(label(c.n))}</button>`).join("");}
+sBox.addEventListener("mousedown",e=>{const d=e.target.closest("[data-n]");if(d){e.preventDefault();setCounterChamp(d.dataset.n);sList=[];drawSugg();}});
+
+// ---------- pool ----------
+function renderPool(){const q=norm($("#pSearch").value||"");
+  $("#pool").innerHTML=CH.filter(c=>!q||norm(c.fr).includes(q)||norm(c.n).includes(q)).map(c=>`<button class="pc ${passFilters(c)?"":"flt"}" data-n="${esc(c.n)}" aria-pressed="${!excluded.has(c.n)}">${img(c.n,false)}<span>${esc(label(c.n))}</span></button>`).join("");}
+$("#pool").addEventListener("click",e=>{const d=e.target.closest(".pc");if(!d)return;const n=d.dataset.n;excluded.has(n)?excluded.delete(n):excluded.add(n);store.set("excluded",[...excluded]);d.setAttribute("aria-pressed",!excluded.has(n));updateCount();});
+$("#pSearch").addEventListener("input",renderPool);
+const saveEx=()=>{store.set("excluded",[...excluded]);renderPool();updateCount();};
+$("#pAll").onclick=()=>{excluded.clear();saveEx();};
+$("#pNone").onclick=()=>{excluded=new Set(CH.map(c=>c.n));saveEx();};
+$("#pInvert").onclick=()=>{excluded=new Set(CH.map(c=>c.n).filter(n=>!excluded.has(n)));saveEx();};
+
+// ---------- daily ----------
+(function(){const d=new Date();let h=d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();h=Math.imul(h^(h>>>15),0x2c1b3c6d);h^=h>>>12;h=Math.imul(h,0x297a2d39);h^=h>>>15;
+  const c=CH[Math.abs(h)%CH.length];window.paintDaily=()=>{$("#daily").textContent=label(c.n);};
+  $("#daily").onclick=async()=>{if(busy)return;showTab("single");setBusy(true,false);await spin(c.n,null,`<div class="ctx">${L("Champion du jour","Champion of the day")}</div><div class="vt">${esc(label(c.n))}</div>`);cur=c;$("#sTags").innerHTML=tagsFor(c);setBusy(false);};})();
+
+// ---------- language ----------
+function applyLang(){
+  applyStatic();paintDaily();renderFcChips();
+  setVerdict(`<div class="ctx">${L("La bande défile ici à chaque tirage.","The reel spins here on every draw.")}</div><div class="vt">${L("Prêt à tirer","Ready to draw")}</div>`);
+}
+$("#lang").addEventListener("click",e=>{const b=e.target.closest("[data-l]");if(!b||busy||b.dataset.l===LANG)return;LANG=b.dataset.l;store.set("lang",LANG);
+  applyLang();$("#stage").classList.add("idle");renderFilters();renderPlayers();renderBoard();renderSep();showRoleCounts();updateNext();renderHist();renderCounterLists();
+  if(curTab==="pool")renderPool();if(cur)$("#sTags").innerHTML=tagsFor(cur);if(cChamp){$("#cSearch").value=label(cChamp);renderCLanes();}});
+
+// ---------- help bubbles ----------
+const TIPS={
+  ranks:["Les pseudos et les rangs sont facultatifs. Sans rang, les équipes sont tirées au hasard. Avec des rangs, le site cherche la répartition la plus juste.","Names and ranks are optional. Without ranks, teams are fully random. With ranks, the site looks for the fairest split."],
+  pairs:["Choisis deux joueurs qui ne doivent pas jouer ensemble. Chaque mélange des équipes les séparera.","Pick two players who shouldn't play together. Every team shuffle will split them."],
+  force:["Choisis un joueur, puis son poste ou les champions qu'il peut recevoir. Le mode discret cache ces choix sur sa ligne.","Pick a player, then their role or the champions they can get. Discreet mode hides these choices from their line."],
+  counters:["Un counter bat ce champion. Une prey est un champion qu'il bat. Les chiffres viennent de LoLalytics.","A counter beats this champion. A prey is a champion it beats. The numbers come from LoLalytics."]
+};
+function closeTip(){const b=$("#tipBox");b.hidden=true;if(b._a){b._a.setAttribute("aria-expanded","false");b._a=null;}}
+document.addEventListener("click",e=>{
+  const q=e.target.closest('a[href^="#faq"]');
+  if(q){closeTip();const d=document.getElementById(q.getAttribute("href").slice(1));if(d&&d.tagName==="DETAILS")d.open=true;return;}
+  const t=e.target.closest(".tip");
+  if(t){e.preventDefault();const b=$("#tipBox"),same=b._a===t;closeTip();if(same)return;
+    const k=t.dataset.tip;b.innerHTML=`<p>${L(...TIPS[k])}</p><a href="#faq-${k}">${L("Lire la FAQ","Read the FAQ")}</a>`;b.hidden=false;b._a=t;b._y=scrollY;t.setAttribute("aria-expanded","true");
+    const r=t.getBoundingClientRect(),w=b.offsetWidth,h=b.offsetHeight;
+    b.style.left=Math.max(16,Math.min(innerWidth-w-16,r.left+r.width/2-w/2))+"px";
+    b.style.top=(r.bottom+8+h>innerHeight?Math.max(8,r.top-h-8):r.bottom+8)+"px";return;}
+  if(!e.target.closest("#tipBox"))closeTip();
+});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeTip();});
+addEventListener("scroll",()=>{const b=$("#tipBox");if(b._a&&Math.abs(scrollY-b._y)>60)closeTip();},{passive:true});addEventListener("resize",closeTip);
+
+// ---------- init ----------
+seatForced();document.body.classList.toggle("flex",FLEX);if(FLEX)showTab("flex");$("#patch").textContent=DATA.patch;applyLang();
+renderFilters();updateCount();syncBuildUI();renderPlayers();renderBoard();renderSep();showRoleCounts();updateNext();renderHist();renderCounterLists();idleStrip();routeHash();
+</script>
+</body>
+</html>

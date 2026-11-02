@@ -1,0 +1,1626 @@
+{
+ "Alistar": {
+  "lane": "support",
+  "patch": "16.21",
+  "counteredBy": [
+   [
+    "Swain",
+    47.89
+   ],
+   [
+    "Soraka",
+    47.99
+   ],
+   [
+    "Zilean",
+    48.4
+   ],
+   [
+    "Morgana",
+    48.69
+   ],
+   [
+    "Janna",
+    48.99
+   ],
+   [
+    "Seraphine",
+    49.74
+   ]
+  ],
+  "counters": [
+   [
+    "Pantheon",
+    56.23
+   ],
+   [
+    "Yuumi",
+    55.11
+   ],
+   [
+    "Nautilus",
+    54.98
+   ],
+   [
+    "Tahm Kench",
+    54.73
+   ],
+   [
+    "Blitzcrank",
+    54.48
+   ],
+   [
+    "Pyke",
+    54.4
+   ]
+  ]
+ },
+ "Ashe": {
+  "lane": "bottom",
+  "patch": "16.21",
+  "counteredBy": [
+   [
+    "Yasuo",
+    45.13
+   ],
+   [
+    "Samira",
+    45.9
+   ],
+   [
+    "Kog'Maw",
+    46.83
+   ],
+   [
+    "Twitch",
+    47.73
+   ],
+   [
+    "Tristana",
+    48.6
+   ],
+   [
+    "Kalista",
+    49.59
+   ]
+  ],
+  "counters": [
+   [
+    "Vayne",
+    54.18
+   ],
+   [
+    "Smolder",
+    54.17
+   ],
+   [
+    "Ezreal",
+    53.82
+   ],
+   [
+    "Lucian",
+    53.64
+   ],
+   [
+    "Draven",
+    52.69
+   ],
+   [
+    "Caitlyn",
+    52.61
+   ]
+  ]
+ },
+ "Blitzcrank": {
+  "lane": "support",
+  "patch": "16.21",
+  "counteredBy": [
+   [
+    "Taric",
+    46.57
+   ],
+   [
+    "Braum",
+    48.12
+   ],
+   [
+    "Alistar",
+    48.3
+   ],
+   [
+    "Leona",
+    48.5
+   ],
+   [
+    "Poppy",
+    48.58
+   ],
+   [
+    "Rell",
+    49.91
+   ]
+  ],
+  "counters": [
+   [
+    "Camille",
+    58.69
+   ],
+   [
+    "Mel",
+    58.57
+   ],
+   [
+    "Lux",
+    56.66
+   ],
+   [
+    "Sylas",
+    56.54
+   ],
+   [
+    "Yuumi",
+    55.59
+   ],
+   [
+    "Nautilus",
+    55.44
+   ]
+  ]
+ },
+ "Cassiopeia": {
+  "lane": "middle",
+  "patch": "16.21",
+  "counteredBy": [
+   [
+    "Syndra",
+    44.28
+   ],
+   [
+    "Twisted Fate",
+    45.16
+   ],
+   [
+    "Locke",
+    45.45
+   ],
+   [
+    "Ekko",
+    46.0
+   ],
+   [
+    "Vladimir",
+    47.17
+   ],
+   [
+    "Akali",
+    47.2
+   ]
+  ],
+  "counters": [
+   [
+    "Yasuo",
+    57.32
+   ],
+   [
+    "Sylas",
+    56.32
+   ],
+   [
+    "Katarina",
+    53.28
+   ],
+   [
+    "Ahri",
+    52.69
+   ],
+   [
+    "Lissandra",
+    52.25
+   ],
+   [
+    "Yone",
+    51.23
+   ]
+  ]
+ },
+ "Draven": {
+  "lane": "bottom",
+  "patch": "16.21",
+  "counteredBy": [
+   [
+    "Hwei",
+    44.14
+   ],
+   [
+    "Vel'Koz",
+    44.71
+   ],
+   [
+    "Swain",
+    45.05
+   ],
+   [
+    "Xerath",
+    45.43
+   ],
+   [
+    "Yasuo",
+    45.47
+   ],
+   [
+    "Veigar",
+    45.83
+   ]
+  ],
+  "counters": [
+   [
+    "Kalista",
+    55.54
+   ],
+   [
+    "Ezreal",
+    55.29
+   ],
+   [
+    "Tristana",
+    53.58
+   ],
+   [
+    "Yunara",
+    53.28
+   ],
+   [
+    "Vayne",
+    52.92
+   ],
+   [
+    "Caitlyn",
+    52.59
+   ]
+  ]
+ },
+ "Fiora": {
+  "lane": "top",
+  "patch": "16.21",
+  "counteredBy": [
+   [
+    "Malphite",
+    45.96
+   ],
+   [
+    "Udyr",
+    46.44
+   ],
+   [
+    "Kayle",
+    47.83
+   ],
+   [
+    "Poppy",
+    48.53
+   ],
+   [
+    "Quinn",
+    48.57
+   ],
+   [
+    "Warwick",
+    48.71
+   ]
+  ],
+  "counters": [
+   [
+    "K'Sante",
+    57.68
+   ],
+   [
+    "Yone",
+    56.07
+   ],
+   [
+    "Rumble",
+    55.75
+   ],
+   [
+    "Illaoi",
+    55.42
+   ],
+   [
+    "Aatrox",
+    54.97
+   ],
+   [
+    "Gwen",
+    54.91
+   ]
+  ]
+ },
+ "Gragas": {
+  "lane": "jungle",
+  "patch": "16.21",
+  "counteredBy": [
+   [
+    "Hecarim",
+    49.57
+   ],
+   [
+    "Cho'Gath",
+    49.89
+   ],
+   [
+    "Graves",
+    50.07
+   ],
+   [
+    "Briar",
+    51.08
+   ],
+   [
+    "Sylas",
+    51.15
+   ],
+   [
+    "Talon",
+    51.32
+   ]
+  ],
+  "counters": [
+   [
+    "Vi",
+    56.83
+   ],
+   [
+    "Ekko",
+    56.03
+   ],
+   [
+    "Lee Sin",
+    54.84
+   ],
+   [
+    "Jarvan IV",
+    54.65
+   ],
+   [
+    "Qiyana",
+    54.49
+   ],
+   [
+    "Nocturne",
+    54.03
+   ]
+  ]
+ },
+ "Illaoi": {
+  "lane": "top",
+  "patch": "16.21",
+  "counteredBy": [
+   [
+    "Fiora",
+    45.02
+   ],
+   [
+    "Gangplank",
+    46.7
+   ],
+   [
+    "Ambessa",
+    46.99
+   ],
+   [
+    "Mordekaiser",
+    47.3
+   ],
+   [
+    "Tryndamere",
+    47.8
+   ],
+   [
+    "Teemo",
+    48.43
+   ]
+  ],
+  "counters": [
+   [
+    "Urgot",
+    60.9
+   ],
+   [
+    "Volibear",
+    59.87
+   ],
+   [
+    "Renekton",
+    57.74
+   ],
+   [
+    "Zaahen",
+    57.05
+   ],
+   [
+    "Nasus",
+    57.03
+   ],
+   [
+    "Shen",
+    56.53
+   ]
+  ]
+ },
+ "Jayce": {
+  "lane": "top",
+  "patch": "16.21",
+  "counteredBy": [
+   [
+    "Zaahen",
+    41.65
+   ],
+   [
+    "Kled",
+    42.11
+   ],
+   [
+    "Urgot",
+    44.21
+   ],
+   [
+    "Malphite",
+    44.25
+   ],
+   [
+    "Sion",
+    44.29
+   ],
+   [
+    "Shen",
+    44.62
+   ]
+  ],
+  "counters": [
+   [
+    "Riven",
+    55.16
+   ],
+   [
+    "Gwen",
+    54.24
+   ],
+   [
+    "K'Sante",
+    52.69
+   ],
+   [
+    "Yone",
+    52.39
+   ],
+   [
+    "Illaoi",
+    52.38
+   ],
+   [
+    "Tryndamere",
+    52.32
+   ]
+  ]
+ },
+ "Karma": {
+  "lane": "support",
+  "patch": "16.21",
+  "counteredBy": [
+   [
+    "Fiddlesticks",
+    44.3
+   ],
+   [
+    "Sona",
+    46.44
+   ],
+   [
+    "Braum",
+    46.57
+   ],
+   [
+    "Maokai",
+    47.0
+   ],
+   [
+    "Taric",
+    47.17
+   ],
+   [
+    "Blitzcrank",
+    47.52
+   ]
+  ],
+  "counters": [
+   [
+    "Mel",
+    58.81
+   ],
+   [
+    "Teemo",
+    58.22
+   ],
+   [
+    "Miss Fortune",
+    57.83
+   ],
+   [
+    "Morgana",
+    54.6
+   ],
+   [
+    "Ashe",
+    54.41
+   ],
+   [
+    "Xerath",
+    54.35
+   ]
+  ]
+ },
+ "Kennen": {
+  "lane": "top",
+  "patch": "16.21",
+  "counteredBy": [
+   [
+    "Olaf",
+    44.68
+   ],
+   [
+    "Sion",
+    45.83
+   ],
+   [
+    "Galio",
+    46.41
+   ],
+   [
+    "Ornn",
+    46.82
+   ],
+   [
+    "Sylas",
+    47.03
+   ],
+   [
+    "Cho'Gath",
+    47.63
+   ]
+  ],
+  "counters": [
+   [
+    "Zaahen",
+    57.29
+   ],
+   [
+    "Pantheon",
+    57.23
+   ],
+   [
+    "Jax",
+    55.85
+   ],
+   [
+    "Volibear",
+    55.02
+   ],
+   [
+    "Gnar",
+    54.92
+   ],
+   [
+    "Gragas",
+    54.71
+   ]
+  ]
+ },
+ "Lee Sin": {
+  "lane": "jungle",
+  "patch": "16.21",
+  "counteredBy": [
+   [
+    "Shyvana",
+    45.19
+   ],
+   [
+    "Gragas",
+    45.73
+   ],
+   [
+    "Zac",
+    45.97
+   ],
+   [
+    "Ivern",
+    46.3
+   ],
+   [
+    "Briar",
+    46.32
+   ],
+   [
+    "Taliyah",
+    46.68
+   ]
+  ],
+  "counters": [
+   [
+    "Zed",
+    54.05
+   ],
+   [
+    "Fizz",
+    53.03
+   ],
+   [
+    "Jax",
+    52.94
+   ],
+   [
+    "Karthus",
+    52.62
+   ],
+   [
+    "Locke",
+    52.46
+   ],
+   [
+    "Qiyana",
+    52.18
+   ]
+  ]
+ },
+ "Lulu": {
+  "lane": "support",
+  "patch": "16.21",
+  "counteredBy": [
+   [
+    "Braum",
+    47.36
+   ],
+   [
+    "Amumu",
+    48.01
+   ],
+   [
+    "Tahm Kench",
+    48.34
+   ],
+   [
+    "Rell",
+    48.38
+   ],
+   [
+    "Thresh",
+    48.43
+   ],
+   [
+    "Leona",
+    48.75
+   ]
+  ],
+  "counters": [
+   [
+    "Swain",
+    58.96
+   ],
+   [
+    "Ashe",
+    58.36
+   ],
+   [
+    "Shaco",
+    56.6
+   ],
+   [
+    "Sylas",
+    56.25
+   ],
+   [
+    "Neeko",
+    56.01
+   ],
+   [
+    "Camille",
+    55.51
+   ]
+  ]
+ },
+ "Mel": {
+  "lane": "middle",
+  "patch": "16.21",
+  "counteredBy": [
+   [
+    "Xerath",
+    41.02
+   ],
+   [
+    "Fizz",
+    41.89
+   ],
+   [
+    "Taliyah",
+    42.28
+   ],
+   [
+    "Syndra",
+    42.29
+   ],
+   [
+    "Yasuo",
+    44.44
+   ],
+   [
+    "Malzahar",
+    44.9
+   ]
+  ],
+  "counters": [
+   [
+    "Qiyana",
+    51.76
+   ],
+   [
+    "Sylas",
+    51.45
+   ],
+   [
+    "Ahri",
+    51.36
+   ],
+   [
+    "LeBlanc",
+    51.07
+   ],
+   [
+    "Anivia",
+    50.59
+   ],
+   [
+    "Katarina",
+    50.46
+   ]
+  ]
+ },
+ "Nami": {
+  "lane": "support",
+  "patch": "16.21",
+  "counteredBy": [
+   [
+    "Maokai",
+    48.53
+   ],
+   [
+    "Thresh",
+    49.07
+   ],
+   [
+    "Sona",
+    49.6
+   ],
+   [
+    "Taric",
+    49.76
+   ],
+   [
+    "Nautilus",
+    49.76
+   ],
+   [
+    "Blitzcrank",
+    50.22
+   ]
+  ],
+  "counters": [
+   [
+    "Swain",
+    58.18
+   ],
+   [
+    "Sylas",
+    57.1
+   ],
+   [
+    "Morgana",
+    55.78
+   ],
+   [
+    "Poppy",
+    55.53
+   ],
+   [
+    "Neeko",
+    55.42
+   ],
+   [
+    "Pantheon",
+    55.15
+   ]
+  ]
+ },
+ "Nocturne": {
+  "lane": "jungle",
+  "patch": "16.21",
+  "counteredBy": [
+   [
+    "Zac",
+    45.57
+   ],
+   [
+    "Cho'Gath",
+    45.75
+   ],
+   [
+    "Nidalee",
+    46.34
+   ],
+   [
+    "Wukong",
+    47.2
+   ],
+   [
+    "Evelynn",
+    48.3
+   ],
+   [
+    "Shyvana",
+    48.81
+   ]
+  ],
+  "counters": [
+   [
+    "Zed",
+    56.48
+   ],
+   [
+    "Qiyana",
+    56.13
+   ],
+   [
+    "Rengar",
+    55.28
+   ],
+   [
+    "Lee Sin",
+    55.27
+   ],
+   [
+    "Kayn",
+    54.49
+   ],
+   [
+    "Naafiri",
+    53.67
+   ]
+  ]
+ },
+ "Poppy": {
+  "lane": "top",
+  "patch": "16.21",
+  "counteredBy": [
+   [
+    "Shen",
+    45.76
+   ],
+   [
+    "Garen",
+    48.29
+   ],
+   [
+    "Darius",
+    48.63
+   ],
+   [
+    "Malphite",
+    48.76
+   ],
+   [
+    "Dr. Mundo",
+    48.88
+   ],
+   [
+    "Gangplank",
+    50.13
+   ]
+  ],
+  "counters": [
+   [
+    "K'Sante",
+    58.62
+   ],
+   [
+    "Jayce",
+    58.44
+   ],
+   [
+    "Irelia",
+    57.3
+   ],
+   [
+    "Fiora",
+    56.7
+   ],
+   [
+    "Volibear",
+    56.3
+   ],
+   [
+    "Yone",
+    56.23
+   ]
+  ]
+ },
+ "Rek'Sai": {
+  "lane": "jungle",
+  "patch": "16.21",
+  "counteredBy": [
+   [
+    "Cho'Gath",
+    45.57
+   ],
+   [
+    "Hecarim",
+    49.47
+   ],
+   [
+    "Jarvan IV",
+    50.45
+   ],
+   [
+    "Lillia",
+    51.17
+   ],
+   [
+    "Wukong",
+    52.02
+   ],
+   [
+    "Lee Sin",
+    53.09
+   ]
+  ],
+  "counters": [
+   [
+    "Kha'Zix",
+    57.65
+   ],
+   [
+    "Sylas",
+    56.73
+   ],
+   [
+    "Master Yi",
+    56.2
+   ],
+   [
+    "Qiyana",
+    55.22
+   ],
+   [
+    "Graves",
+    55.09
+   ],
+   [
+    "Viego",
+    54.5
+   ]
+  ]
+ },
+ "Rumble": {
+  "lane": "top",
+  "patch": "16.21",
+  "counteredBy": [
+   [
+    "Sion",
+    43.06
+   ],
+   [
+    "Ornn",
+    43.81
+   ],
+   [
+    "Yone",
+    44.56
+   ],
+   [
+    "Gwen",
+    45.1
+   ],
+   [
+    "Shen",
+    45.26
+   ],
+   [
+    "Urgot",
+    45.61
+   ]
+  ],
+  "counters": [
+   [
+    "Renekton",
+    52.7
+   ],
+   [
+    "K'Sante",
+    52.58
+   ],
+   [
+    "Pantheon",
+    52.14
+   ],
+   [
+    "Camille",
+    50.87
+   ],
+   [
+    "Jayce",
+    50.68
+   ],
+   [
+    "Teemo",
+    50.56
+   ]
+  ]
+ },
+ "Sett": {
+  "lane": "top",
+  "patch": "16.21",
+  "counteredBy": [
+   [
+    "Ornn",
+    48.83
+   ],
+   [
+    "Gragas",
+    49.26
+   ],
+   [
+    "Trundle",
+    49.27
+   ],
+   [
+    "Warwick",
+    49.46
+   ],
+   [
+    "Aatrox",
+    49.47
+   ],
+   [
+    "Singed",
+    49.92
+   ]
+  ],
+  "counters": [
+   [
+    "Rumble",
+    59.08
+   ],
+   [
+    "Tahm Kench",
+    57.43
+   ],
+   [
+    "Irelia",
+    56.21
+   ],
+   [
+    "Yorick",
+    56.15
+   ],
+   [
+    "K'Sante",
+    55.88
+   ],
+   [
+    "Ambessa",
+    55.14
+   ]
+  ]
+ },
+ "Sivir": {
+  "lane": "bottom",
+  "patch": "16.21",
+  "counteredBy": [
+   [
+    "Aurelion Sol",
+    46.56
+   ],
+   [
+    "Twitch",
+    46.89
+   ],
+   [
+    "Katarina",
+    48.45
+   ],
+   [
+    "Zeri",
+    49.08
+   ],
+   [
+    "Yunara",
+    49.14
+   ],
+   [
+    "Vel'Koz",
+    49.5
+   ]
+  ],
+  "counters": [
+   [
+    "Ezreal",
+    57.69
+   ],
+   [
+    "Smolder",
+    56.76
+   ],
+   [
+    "Corki",
+    55.96
+   ],
+   [
+    "Caitlyn",
+    55.81
+   ],
+   [
+    "Veigar",
+    55.08
+   ],
+   [
+    "Kalista",
+    55.08
+   ]
+  ]
+ },
+ "Sylas": {
+  "lane": "middle",
+  "patch": "16.21",
+  "counteredBy": [
+   [
+    "Vex",
+    44.96
+   ],
+   [
+    "Gwen",
+    44.98
+   ],
+   [
+    "Taliyah",
+    45.26
+   ],
+   [
+    "Heimerdinger",
+    45.45
+   ],
+   [
+    "Vel'Koz",
+    45.95
+   ],
+   [
+    "Akshan",
+    46.27
+   ]
+  ],
+  "counters": [
+   [
+    "Malphite",
+    60.42
+   ],
+   [
+    "Irelia",
+    55.39
+   ],
+   [
+    "Nasus",
+    54.42
+   ],
+   [
+    "Viktor",
+    53.43
+   ],
+   [
+    "Zed",
+    53.37
+   ],
+   [
+    "Kayle",
+    53.17
+   ]
+  ]
+ },
+ "Teemo": {
+  "lane": "top",
+  "patch": "16.21",
+  "counteredBy": [
+   [
+    "Viktor",
+    45.31
+   ],
+   [
+    "Sion",
+    46.68
+   ],
+   [
+    "Anivia",
+    48.96
+   ],
+   [
+    "Malphite",
+    48.96
+   ],
+   [
+    "Ornn",
+    49.3
+   ],
+   [
+    "Akali",
+    49.53
+   ]
+  ],
+  "counters": [
+   [
+    "Vayne",
+    65.25
+   ],
+   [
+    "Volibear",
+    61.28
+   ],
+   [
+    "Trundle",
+    58.14
+   ],
+   [
+    "Gnar",
+    57.07
+   ],
+   [
+    "Ambessa",
+    56.93
+   ],
+   [
+    "Malzahar",
+    56.59
+   ]
+  ]
+ },
+ "Twitch": {
+  "lane": "bottom",
+  "patch": "16.21",
+  "counteredBy": [
+   [
+    "Karthus",
+    43.72
+   ],
+   [
+    "Nilah",
+    45.59
+   ],
+   [
+    "Katarina",
+    46.49
+   ],
+   [
+    "Hwei",
+    46.68
+   ],
+   [
+    "Yasuo",
+    47.25
+   ],
+   [
+    "Lux",
+    48.14
+   ]
+  ],
+  "counters": [
+   [
+    "Mel",
+    58.51
+   ],
+   [
+    "Seraphine",
+    55.97
+   ],
+   [
+    "Smolder",
+    55.83
+   ],
+   [
+    "Varus",
+    55.74
+   ],
+   [
+    "Sivir",
+    55.29
+   ],
+   [
+    "Ashe",
+    55.09
+   ]
+  ]
+ },
+ "Vel'Koz": {
+  "lane": "support",
+  "patch": "16.21",
+  "counteredBy": [
+   [
+    "Taric",
+    46.98
+   ],
+   [
+    "Blitzcrank",
+    48.53
+   ],
+   [
+    "Rakan",
+    49.16
+   ],
+   [
+    "Janna",
+    49.33
+   ],
+   [
+    "Yuumi",
+    49.72
+   ],
+   [
+    "LeBlanc",
+    49.85
+   ]
+  ],
+  "counters": [
+   [
+    "Swain",
+    58.3
+   ],
+   [
+    "Morgana",
+    56.19
+   ],
+   [
+    "Sylas",
+    56.06
+   ],
+   [
+    "Lux",
+    56.02
+   ],
+   [
+    "Ashe",
+    55.76
+   ],
+   [
+    "Lulu",
+    55.11
+   ]
+  ]
+ },
+ "Volibear": {
+  "lane": "top",
+  "patch": "16.21",
+  "counteredBy": [
+   [
+    "Quinn",
+    43.45
+   ],
+   [
+    "Teemo",
+    44.79
+   ],
+   [
+    "Vayne",
+    45.01
+   ],
+   [
+    "Jax",
+    45.06
+   ],
+   [
+    "Kayle",
+    46.17
+   ],
+   [
+    "Kennen",
+    46.41
+   ]
+  ],
+  "counters": [
+   [
+    "Yorick",
+    56.4
+   ],
+   [
+    "Yasuo",
+    55.78
+   ],
+   [
+    "Trundle",
+    54.96
+   ],
+   [
+    "Irelia",
+    54.88
+   ],
+   [
+    "Rumble",
+    54.55
+   ],
+   [
+    "Nasus",
+    54.19
+   ]
+  ]
+ },
+ "Yasuo": {
+  "lane": "middle",
+  "patch": "16.21",
+  "counteredBy": [
+   [
+    "Darius",
+    43.23
+   ],
+   [
+    "Ambessa",
+    46.36
+   ],
+   [
+    "Riven",
+    47.27
+   ],
+   [
+    "Tryndamere",
+    47.27
+   ],
+   [
+    "Sett",
+    47.31
+   ],
+   [
+    "Taliyah",
+    47.35
+   ]
+  ],
+  "counters": [
+   [
+    "Ezreal",
+    65.24
+   ],
+   [
+    "Mel",
+    60.98
+   ],
+   [
+    "Smolder",
+    60.96
+   ],
+   [
+    "Naafiri",
+    60.65
+   ],
+   [
+    "Tristana",
+    60.3
+   ],
+   [
+    "Akshan",
+    58.69
+   ]
+  ]
+ },
+ "Zac": {
+  "lane": "jungle",
+  "patch": "16.21",
+  "counteredBy": [
+   [
+    "Ekko",
+    45.63
+   ],
+   [
+    "Lillia",
+    46.03
+   ],
+   [
+    "Xin Zhao",
+    47.96
+   ],
+   [
+    "Diana",
+    49.88
+   ],
+   [
+    "Shyvana",
+    50.1
+   ],
+   [
+    "Cho'Gath",
+    50.21
+   ]
+  ],
+  "counters": [
+   [
+    "Rengar",
+    60.05
+   ],
+   [
+    "Qiyana",
+    59.84
+   ],
+   [
+    "Shaco",
+    58.33
+   ],
+   [
+    "Lee Sin",
+    57.8
+   ],
+   [
+    "Vi",
+    57.24
+   ],
+   [
+    "Nocturne",
+    57.22
+   ]
+  ]
+ },
+ "Zyra": {
+  "lane": "support",
+  "patch": "16.21",
+  "counteredBy": [
+   [
+    "Vel'Koz",
+    48.06
+   ],
+   [
+    "Janna",
+    48.86
+   ],
+   [
+    "Senna",
+    49.08
+   ],
+   [
+    "Blitzcrank",
+    49.39
+   ],
+   [
+    "Rell",
+    49.4
+   ],
+   [
+    "Xerath",
+    49.53
+   ]
+  ],
+  "counters": [
+   [
+    "Seraphine",
+    55.85
+   ],
+   [
+    "Morgana",
+    54.26
+   ],
+   [
+    "Swain",
+    54.22
+   ],
+   [
+    "Zilean",
+    53.61
+   ],
+   [
+    "Lux",
+    53.35
+   ],
+   [
+    "Yuumi",
+    53.11
+   ]
+  ]
+ }
+}

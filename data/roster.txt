@@ -1,0 +1,173 @@
+Aatrox|T|Fighter|AD|Melee|2|2013|Runeterra
+Ahri|M|Mage,Assassin|AP|Ranged|2|2011|Ionia
+Akali|M,T|Assassin|AP|Melee|3|2010|Ionia
+Akshan|M,T|Marksman,Assassin|AD|Ranged|3|2021|Shurima
+Alistar|S|Tank,Support|AP|Melee|1|2009|Runeterra
+Ambessa|T,J|Fighter|AD|Melee|3|2024|Noxus
+Amumu|J,S|Tank|AP|Melee|1|2009|Shurima
+Anivia|M|Mage|AP|Ranged|3|2009|Freljord
+Annie|M,S|Mage|AP|Ranged|1|2009|Noxus
+Aphelios|B|Marksman|AD|Ranged|3|2019|Targon
+Ashe|B,S|Marksman|AD|Ranged|1|2009|Freljord
+Aurelion Sol|M|Mage|AP|Ranged|3|2016|Targon
+Aurora|M,T|Mage|AP|Ranged|2|2024|Freljord
+Azir|M|Mage,Marksman|AP|Ranged|3|2014|Shurima
+Bard|S|Support|AP|Ranged|3|2015|Runeterra
+Bel'Veth|J|Fighter|AD|Melee|2|2022|The Void
+Blitzcrank|S|Tank|AP|Melee|1|2009|Zaun
+Brand|S,M,J|Mage|AP|Ranged|1|2011|Freljord
+Braum|S|Support,Tank|AP|Melee|1|2014|Freljord
+Briar|J|Fighter,Assassin|AD|Melee|2|2023|Noxus
+Caitlyn|B|Marksman|AD|Ranged|1|2011|Piltover
+Camille|T|Fighter|AD|Melee|3|2016|Piltover
+Cassiopeia|M,T|Mage|AP|Ranged|3|2010|Shurima
+Cho'Gath|T|Tank|AP|Melee|1|2009|The Void
+Corki|M|Marksman|Hybrid|Ranged|2|2009|Piltover
+Darius|T|Fighter|AD|Melee|1|2012|Noxus
+Diana|J,M|Fighter,Assassin|AP|Melee|2|2012|Targon
+Dr. Mundo|T|Tank|AD|Melee|1|2009|Zaun
+Draven|B|Marksman|AD|Ranged|3|2012|Noxus
+Ekko|J,M|Assassin|AP|Melee|3|2015|Zaun
+Elise|J|Mage|AP|Both|3|2012|Shadow Isles
+Evelynn|J|Assassin|AP|Melee|3|2009|Runeterra
+Ezreal|B|Marksman|AD|Ranged|3|2010|Piltover
+Fiddlesticks|J|Mage|AP|Ranged|2|2009|Runeterra
+Fiora|T|Fighter|AD|Melee|3|2012|Demacia
+Fizz|M|Assassin|AP|Melee|2|2011|Bilgewater
+Galio|M,S|Tank|AP|Melee|2|2010|Demacia
+Gangplank|T|Fighter|AD|Melee|3|2009|Bilgewater
+Garen|T|Fighter|AD|Melee|1|2010|Demacia
+Gnar|T|Fighter|AD|Both|3|2014|Freljord
+Gragas|J,T|Fighter,Tank|AP|Melee|2|2010|Freljord
+Graves|J|Marksman|AD|Ranged|2|2011|Bilgewater
+Gwen|T|Fighter|AP|Melee|2|2021|Shadow Isles
+Hecarim|J|Fighter|AD|Melee|2|2012|Shadow Isles
+Heimerdinger|M,T,S|Mage|AP|Ranged|2|2009|Piltover
+Hwei|M,S|Mage|AP|Ranged|3|2023|Ionia
+Illaoi|T|Fighter|AD|Melee|2|2015|Bilgewater
+Irelia|T,M|Fighter|AD|Melee|3|2010|Ionia
+Ivern|J|Support|AP|Melee|2|2016|Ionia
+Janna|S|Support|AP|Ranged|2|2009|Zaun
+Jarvan IV|J|Fighter,Tank|AD|Melee|2|2011|Demacia
+Jax|T,J|Fighter|AD|Melee|2|2009|Runeterra
+Jayce|T,M|Fighter,Marksman|AD|Both|3|2012|Piltover
+Jhin|B|Marksman|AD|Ranged|2|2016|Ionia
+Jinx|B|Marksman|AD|Ranged|2|2013|Zaun
+K'Sante|T|Tank,Fighter|AD|Melee|3|2022|Shurima
+Kai'Sa|B|Marksman|Hybrid|Ranged|2|2018|The Void
+Kalista|B|Marksman|AD|Ranged|3|2014|Shadow Isles
+Karma|S,M|Mage,Support|AP|Ranged|2|2011|Ionia
+Karthus|J|Mage|AP|Ranged|2|2009|Shadow Isles
+Kassadin|M|Assassin|AP|Melee|2|2009|The Void
+Katarina|M|Assassin|AP|Melee|3|2009|Noxus
+Kayle|T|Fighter,Mage|AP|Both|2|2009|Demacia
+Kayn|J|Fighter,Assassin|AD|Melee|2|2017|Ionia
+Kennen|T|Mage|AP|Ranged|2|2010|Ionia
+Kha'Zix|J|Assassin|AD|Melee|2|2012|The Void
+Kindred|J|Marksman|AD|Ranged|3|2015|Runeterra
+Kled|T|Fighter|AD|Melee|2|2016|Noxus
+Kog'Maw|B|Marksman|Hybrid|Ranged|2|2010|The Void
+LeBlanc|M|Assassin|AP|Ranged|3|2010|Noxus
+Lee Sin|J|Fighter|AD|Melee|3|2011|Ionia
+Leona|S|Tank|AP|Melee|1|2011|Targon
+Lillia|J|Mage|AP|Melee|2|2020|Ionia
+Lissandra|M|Mage|AP|Ranged|2|2013|Freljord
+Locke|M|Assassin|AP|Melee|3|2026|Demacia
+Lucian|B,M|Marksman|AD|Ranged|2|2013|Demacia
+Lulu|S|Support|AP|Ranged|2|2012|Bandle City
+Lux|S,M|Mage|AP|Ranged|1|2010|Demacia
+Malphite|T,S|Tank|AP|Melee|1|2009|Ixtal
+Malzahar|M|Mage|AP|Ranged|1|2010|The Void
+Maokai|S,J,T|Tank|AP|Melee|1|2011|Shadow Isles
+Master Yi|J|Assassin|AD|Melee|1|2009|Ionia
+Mel|M,S|Mage|AP|Ranged|2|2025|Noxus
+Milio|S|Support|AP|Ranged|1|2023|Ixtal
+Miss Fortune|B|Marksman|AD|Ranged|1|2010|Bilgewater
+Mordekaiser|T|Fighter|AP|Melee|1|2010|Shadow Isles
+Morgana|S,M|Mage,Support|AP|Ranged|1|2009|Demacia
+Naafiri|M|Assassin|AD|Melee|1|2023|Shurima
+Nami|S|Support|AP|Ranged|2|2012|Bilgewater
+Nasus|T|Fighter|AD|Melee|1|2009|Shurima
+Nautilus|S|Tank|AP|Melee|1|2012|Bilgewater
+Neeko|M,S|Mage|AP|Ranged|2|2018|Ixtal
+Nidalee|J|Assassin|AP|Both|3|2009|Ixtal
+Nilah|B|Fighter|AD|Melee|2|2022|Bilgewater
+Nocturne|J|Assassin|AD|Melee|1|2011|Runeterra
+Nunu & Willump|J|Tank|AP|Melee|1|2009|Freljord
+Olaf|T,J|Fighter|AD|Melee|1|2010|Freljord
+Orianna|M|Mage|AP|Ranged|3|2011|Piltover
+Ornn|T|Tank|AP|Melee|2|2017|Freljord
+Pantheon|S,T,M,J|Fighter|AD|Melee|2|2010|Targon
+Poppy|T,J,S|Tank|AD|Melee|2|2010|Demacia
+Pyke|S|Assassin|AD|Melee|3|2018|Bilgewater
+Qiyana|J,M|Assassin|AD|Melee|3|2019|Ixtal
+Quinn|T|Marksman|AD|Ranged|2|2013|Demacia
+Rakan|S|Support|AP|Melee|2|2017|Ionia
+Rammus|J|Tank|AP|Melee|1|2009|Shurima
+Rek'Sai|J|Fighter|AD|Melee|2|2014|The Void
+Rell|S|Tank|AP|Melee|2|2020|Noxus
+Renata Glasc|S|Support|AP|Ranged|2|2022|Zaun
+Renekton|T|Fighter|AD|Melee|2|2011|Shurima
+Rengar|J,T|Assassin|AD|Melee|3|2012|Ixtal
+Riven|T|Fighter|AD|Melee|3|2011|Noxus
+Rumble|T,M|Fighter,Mage|AP|Melee|3|2011|Bandle City
+Ryze|M,T|Mage|AP|Ranged|3|2009|Runeterra
+Samira|B|Marksman|AD|Ranged|3|2020|Noxus
+Sejuani|J|Tank|AP|Melee|2|2012|Freljord
+Senna|S,B|Marksman,Support|AD|Ranged|2|2019|Shadow Isles
+Seraphine|S,B,M|Mage|AP|Ranged|1|2020|Piltover
+Sett|T,S|Fighter|AD|Melee|1|2020|Ionia
+Shaco|J,S|Assassin|AD|Melee|3|2009|Runeterra
+Shen|T,S|Tank|AD|Melee|2|2010|Ionia
+Shyvana|J,T|Fighter|Hybrid|Melee|2|2011|Demacia
+Singed|T|Tank|AP|Melee|2|2009|Zaun
+Sion|T|Tank|AD|Melee|2|2009|Noxus
+Sivir|B|Marksman|AD|Ranged|1|2009|Shurima
+Skarner|J,T|Tank|AD|Melee|2|2011|Ixtal
+Smolder|B,M|Marksman|AD|Ranged|2|2024|Runeterra
+Sona|S|Support|AP|Ranged|1|2010|Demacia
+Soraka|S|Support|AP|Ranged|1|2009|Targon
+Swain|S,M,B|Mage|AP|Ranged|2|2010|Noxus
+Sylas|M,J,T|Mage,Assassin|AP|Melee|3|2019|Demacia
+Syndra|M|Mage|AP|Ranged|2|2012|Ionia
+Tahm Kench|S,T|Tank|AP|Melee|2|2015|Bilgewater
+Taliyah|J,M|Mage|AP|Ranged|2|2016|Shurima
+Talon|M,J|Assassin|AD|Melee|2|2011|Noxus
+Taric|S|Support|AP|Melee|1|2009|Targon
+Teemo|T|Marksman|AP|Ranged|1|2009|Bandle City
+Thresh|S|Support|AP|Ranged|3|2013|Shadow Isles
+Tristana|B,M|Marksman|AD|Ranged|1|2009|Bandle City
+Trundle|J,T|Fighter|AD|Melee|1|2010|Freljord
+Tryndamere|T|Fighter|AD|Melee|1|2009|Freljord
+Twisted Fate|M|Mage|AP|Ranged|2|2009|Bilgewater
+Twitch|B,J|Marksman|AD|Ranged|2|2009|Zaun
+Udyr|J,T|Fighter|Hybrid|Melee|2|2009|Freljord
+Urgot|T|Fighter|AD|Melee|2|2010|Zaun
+Varus|B,M|Marksman|AD|Ranged|2|2012|Ionia
+Vayne|B,T|Marksman|AD|Ranged|3|2011|Demacia
+Veigar|M,S|Mage|AP|Ranged|1|2012|Bandle City
+Vel'Koz|S,M|Mage|AP|Ranged|2|2014|The Void
+Vex|M|Mage|AP|Ranged|1|2021|Shadow Isles
+Vi|J|Fighter|AD|Melee|1|2012|Piltover
+Viego|J|Assassin|AD|Melee|2|2021|Shadow Isles
+Viktor|M|Mage|AP|Ranged|2|2011|Zaun
+Vladimir|M,T|Mage|AP|Ranged|2|2010|Noxus
+Volibear|T,J|Fighter|Hybrid|Melee|1|2011|Freljord
+Warwick|J,T|Fighter|AD|Melee|1|2009|Zaun
+Wukong|T,J|Fighter|AD|Melee|1|2011|Ionia
+Xayah|B|Marksman|AD|Ranged|2|2017|Ionia
+Xerath|S,M|Mage|AP|Ranged|2|2011|Shurima
+Xin Zhao|J|Fighter|AD|Melee|1|2010|Demacia
+Yasuo|M,T,B|Fighter|AD|Melee|3|2013|Ionia
+Yone|M,T|Assassin,Fighter|AD|Melee|3|2020|Ionia
+Yorick|T|Fighter|AD|Melee|2|2011|Shadow Isles
+Yunara|B|Marksman|AD|Ranged|2|2025|Ionia
+Yuumi|S|Support|AP|Ranged|1|2019|Bandle City
+Zaahen|T,J|Fighter|AD|Melee|2|2025|Runeterra
+Zac|J,T|Tank|AP|Melee|2|2013|Zaun
+Zed|M,J|Assassin|AD|Melee|3|2012|Ionia
+Zeri|B|Marksman|AD|Ranged|2|2022|Zaun
+Ziggs|B,M|Mage|AP|Ranged|2|2012|Zaun
+Zilean|S,M|Support|AP|Ranged|2|2009|Runeterra
+Zoe|M|Mage|AP|Ranged|3|2016|Targon
+Zyra|S|Mage|AP|Ranged|2|2012|Ixtal

@@ -129,11 +129,15 @@ Search engines use the title, description, canonical link and JSON-LD block at t
 
 ## Saved in the browser
 
-Language, names, ranks, separated pairs, forced roles and types, filters, options, suspense, sound, history and pool are kept in `localStorage`. Nothing goes to a server: everyone who opens the link has their own settings in their own browser, and several people can use it at the same time without affecting each other. Settings are lost in private browsing and don't follow you from one device to another.
+Language, names, ranks, separated pairs, forced roles and types, filters, options, suspense, sound, history and pool are kept in `localStorage`. Settings never go to a server: everyone who opens the link has their own settings in their own browser, and several people can use it at the same time without affecting each other. Settings are lost in private browsing and don't follow you from one device to another.
 
 Each address has its own memory: the live site and http://localhost:8080 don't share their settings.
 
 The current draw (placed teams and drawn champions) is not saved: it disappears when the page reloads, and it is not shared. Use "Copy teams" to send it to the others.
+
+## Visit statistics
+
+The page loads [GoatCounter](https://www.goatcounter.com/), a cookie-free visit counter. It records page views, not settings or draws. To remove it, delete its script tag at the end of the `<head>` in `src/template.html`.
 
 ## Data sources
 

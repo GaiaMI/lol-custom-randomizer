@@ -135,10 +135,6 @@ Each address has its own memory: the live site and http://localhost:8080 don't s
 
 The current draw (placed teams and drawn champions) is not saved: it disappears when the page reloads, and it is not shared. Use "Copy teams" to send it to the others.
 
-## Visit statistics
-
-The page loads [GoatCounter](https://www.goatcounter.com/), a cookie-free visit counter. It records page views, not settings or draws. To remove it, delete its script tag at the end of the `<head>` in `src/template.html`.
-
 ## Data sources
 
 - Champions, icons, items, runes, spells: Riot Games Data Dragon.

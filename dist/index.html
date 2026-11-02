@@ -388,6 +388,7 @@ kbd{border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;paddi
         <button class="btn go" id="rollOne">Draw a champion</button>
         <button class="btn" id="skipOne">Skip this one</button>
         <button class="btn" id="toCounter">See its counters</button>
+        <button class="btn" id="oneBuild">Draw a build</button>
       </div>
       <p class="hint" style="text-align:center"><kbd>Space</kbd> draws again. “Skip” removes the champion until the page reloads.</p>
       <div class="tags" id="sTags"></div>
@@ -526,6 +527,7 @@ const STATIC_FR={"Within a champion category, one match is enough (Tank or Suppo
   "Players and options":"Joueurs et options",
   "Draw a champion":"Tirer un champion",
   "See its counters":"Voir ses counters",
+  "Draw a build":"Tirer un build",
   "Reroll the build":"Relancer le build",
   "Recent draws":"Derniers tirages",
   "Draw a counter":"Tirer un counter",
@@ -759,6 +761,8 @@ async function rollOne(){
 $("#rollOne").onclick=rollOne;
 $("#skipOne").onclick=()=>{if(cur){skipped.add(cur.n);updateCount();}rollOne();};
 $("#toCounter").onclick=()=>{if(cur){setCounterChamp(cur.n);showTab("counter");}};
+const oneBuild=()=>{openBuild(genBuild(cur.n,pick(cur.r)),"",{one:true});beep(800,.08);};
+$("#oneBuild").onclick=()=>{if(busy)return;if(!cur){toast(L("Tire d'abord un champion","Draw a champion first"));return;}oneBuild();};
 $("#clearHist").onclick=()=>{hist=[];store.set("hist",hist);skipped.clear();updateCount();renderHist();};
 document.addEventListener("keydown",e=>{if(e.code==="Space"&&curTab==="single"&&!/INPUT|SELECT|TEXTAREA|BUTTON/.test(document.activeElement.tagName)){e.preventDefault();rollOne();}});
 
@@ -1121,12 +1125,12 @@ function buildHTML(b,player){
 }
 function buildText(b,player){const sh=b.sh.map((v,r)=>shardN(SHARDS[r][v])),c=L(" : ",": ");
   return `${player?player+", ":""}${label(b.c)} (${ROLE_LBL[b.role]||""})\n${L("Sorts","Spells")}${c}${b.spells.map(spellN).join(", ")}\nRunes${c}${runeN(b.pt)} (${b.prim.map(runeN).join(", ")}) + ${runeN(b.st)} (${b.sec.map(runeN).join(", ")}) + ${sh.join(", ")}\n${L("Objets","Items")}${c}${[b.jg,...b.items].filter(Boolean).map(itemName).join(", ")}\n${L("Montée","Skill order")}${c}${b.sk.split("").join(L(" puis "," then "))}`;}
-let bmCtx=null; // {t,i} when opened from a slot, null for a shared link
+let bmCtx=null; // {t,i} from a slot, {one:true} from the single tab, null for a shared link
 function openBuild(b,player,ctx){bmCtx=ctx;$("#bmBody").innerHTML=buildHTML(b,player);$("#bmReroll").hidden=!ctx;$("#bm").hidden=false;$("#bm").dataset.player=player||"";$("#bm")._b=b;$("#bmClose").focus();}
 function closeBuild(){$("#bm").hidden=true;if(location.hash.startsWith("#build-"))history.replaceState(null,"",location.pathname+location.search);}
 $("#bmClose").onclick=closeBuild;$("#bm").addEventListener("click",e=>{if(e.target.id==="bm")closeBuild();});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("#bm").hidden)closeBuild();});
-$("#bmReroll").onclick=()=>{if(!bmCtx)return;const s=T[bmCtx.t][bmCtx.i];s.build=genBuild(s.champ,s.role);openBuild(s.build,pname(s.pi),bmCtx);beep(800,.08);};
+$("#bmReroll").onclick=()=>{if(!bmCtx)return;if(bmCtx.one)return oneBuild();const s=T[bmCtx.t][bmCtx.i];s.build=genBuild(s.champ,s.role);openBuild(s.build,pname(s.pi),bmCtx);beep(800,.08);};
 const blocked=()=>toast(L("Le navigateur a bloqué la copie","The browser blocked copying"));
 $("#bmLink").onclick=async()=>{try{await navigator.clipboard.writeText(linkFor($("#bm")._b,$("#bm").dataset.player));toast(L("Lien du build copié","Build link copied"));}catch(e){blocked();}};
 $("#bmText").onclick=async()=>{try{await navigator.clipboard.writeText(buildText($("#bm")._b,$("#bm").dataset.player));toast(L("Build copié en texte","Build copied as text"));}catch(e){blocked();}};

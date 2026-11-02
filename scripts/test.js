@@ -310,6 +310,19 @@ const { chromium } = require('playwright');
   }));
   if (seo.title > 60 || seo.desc > 160 || seo.h1 !== 1 || seo.ld !== 'WebApplication' || !seo.icon || !seo.canonical.endsWith('/lol-custom-randomizer/')) fail('SEO : ' + JSON.stringify(seo));
 
+  // one champion: a random build for the drawn champion, with reroll and a link
+  await page.click('[data-tab="single"]');
+  await page.evaluate(() => { cur = null; });
+  await page.click('#oneBuild');
+  if (!await page.evaluate(() => $('#bm').hidden)) fail('build ouvert sans champion');
+  await page.selectOption('#speed', '0');
+  await page.click('#rollOne');
+  await page.waitForFunction(() => !busy);
+  await page.click('#oneBuild');
+  const one = await page.evaluate(() => { const a = $('#bm')._b; $('#bmReroll').click(); const b = $('#bm')._b; return { fits: a.c === cur.n && cur.r.includes(a.role) && b.c === cur.n, reroll: !$('#bmReroll').hidden, changed: JSON.stringify(a) !== JSON.stringify(b), open: !$('#bm').hidden, link: decodeBuild(encodeBuild(b, '')).b.c === cur.n }; });
+  if (!one.fits || !one.reroll || !one.changed || !one.open || !one.link) fail('build du champion seul : ' + JSON.stringify(one));
+  await page.click('#bmClose');
+
   if (errors.length) fail('erreurs JavaScript : ' + errors.join(' | '));
   console.log(process.exitCode ? 'Des tests ont échoué.' : 'Tous les tests passent.');
   await browser.close();

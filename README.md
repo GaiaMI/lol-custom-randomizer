@@ -21,7 +21,7 @@ The ready-to-use site is in `dist/`:
 |---|---|
 | 5v5 draw | Draws champions one by one, role by role. Once the opposing player has a champion, a panel suggests its counters or preys for that role. |
 | Flex 5 | The same draw for a single team of five, with no opponent: roles and champions, no counters. It uses the players of the blue team. Switching between 5v5 and Flex starts from an empty draw. |
-| One champion | Draws a single champion with the reel. |
+| One champion | Draws a single champion with the reel, and can draw a random build and runes for it. |
 | Counters | For a champion and a role, shows what it loses to and what it beats, and can draw one of them. |
 | My pool | Removes champions from the draw. This choice is saved in the browser. |
 

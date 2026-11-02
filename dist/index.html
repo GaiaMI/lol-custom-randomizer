@@ -657,7 +657,8 @@ const txt=v=>typeof v==="function"?v():v; // slot notes are functions so they fo
 const teamL=t=>t==="blue"?L("Bleu","Blue"):L("Rouge","Red");
 function esc(s){return String(s).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));}
 function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("show"),1800);}
-async function copy(s){try{await navigator.clipboard.writeText(s);toast(L("Équipes copiées","Teams copied"));}catch(e){toast(L("Le navigateur a bloqué la copie","The browser blocked copying"));}}
+// some browsers refuse the clipboard API: fall back on a hidden text field
+async function copy(s,done){try{await navigator.clipboard.writeText(s);}catch(e){const t=document.createElement("textarea");t.value=s;t.style.cssText="position:fixed;opacity:0";document.body.appendChild(t);t.select();const ok=document.execCommand("copy");t.remove();if(!ok){toast(L("Le navigateur a bloqué la copie","The browser blocked copying"));return;}}toast(done);}
 let actx=null;
 function beep(f=600,d=.03,v=.04){if(!$("#sound").checked)return;try{actx=actx||new AudioContext();const o=actx.createOscillator(),g=actx.createGain();o.type="triangle";o.frequency.value=f;g.gain.value=v;o.connect(g);g.connect(actx.destination);o.start();g.gain.exponentialRampToValueAtTime(.0001,actx.currentTime+d);o.stop(actx.currentTime+d);}catch(e){}}
 const pct=w=>L(w.toFixed(1).replace(".",",")+" %",w.toFixed(1)+"%");
@@ -1057,7 +1058,7 @@ document.querySelector(".teams").addEventListener("click",async e=>{
   const ot=other(t);if(T[ot][i].locked){toast(L("Le champion d'en face est gardé","The opposing champion is kept"));return;}
   pk={t:ot,i,mode:a,manual:true};renderPicker();$("#picker").scrollIntoView({block:"nearest",behavior:"smooth"});
 });
-$("#copyTeam").onclick=()=>{const line=t=>T[t].map(s=>`${F.mode==="aram"?"":ROLE_LBL[s.role]+" : "}${pname(s.pi)}, ${s.champ?label(s.champ):"?"}`).join("\n");copy(FLEX?line("blue"):`${L("Équipe bleue","Blue team")}\n${line("blue")}\n\n${L("Équipe rouge","Red team")}\n${line("red")}`);};
+$("#copyTeam").onclick=()=>{const line=t=>T[t].map(s=>`${F.mode==="aram"?"":ROLE_LBL[s.role]+" : "}${pname(s.pi)}, ${s.champ?label(s.champ):"?"}`).join("\n");copy(FLEX?line("blue"):`${L("Équipe bleue","Blue team")}\n${line("blue")}\n\n${L("Équipe rouge","Red team")}\n${line("red")}`,L("Équipes copiées","Teams copied"));};
 ["oAutoPick","oUnique","oPool"].forEach(id=>$("#"+id).addEventListener("change",()=>{showRoleCounts();updateNext();}));
 const OPT_IDS=["oAutoPick","oUnique","oBalance","oDuel","oBuild","oBuildAdapt","oForceHide","sound","cUseFilters"],savedOpts=store.get("opts",{});
 $("#oForceHide").addEventListener("change",()=>render5());
@@ -1131,11 +1132,10 @@ function closeBuild(){$("#bm").hidden=true;if(location.hash.startsWith("#build-"
 $("#bmClose").onclick=closeBuild;$("#bm").addEventListener("click",e=>{if(e.target.id==="bm")closeBuild();});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("#bm").hidden)closeBuild();});
 $("#bmReroll").onclick=()=>{if(!bmCtx)return;if(bmCtx.one)return oneBuild();const s=T[bmCtx.t][bmCtx.i];s.build=genBuild(s.champ,s.role);openBuild(s.build,pname(s.pi),bmCtx);beep(800,.08);};
-const blocked=()=>toast(L("Le navigateur a bloqué la copie","The browser blocked copying"));
-$("#bmLink").onclick=async()=>{try{await navigator.clipboard.writeText(linkFor($("#bm")._b,$("#bm").dataset.player));toast(L("Lien du build copié","Build link copied"));}catch(e){blocked();}};
-$("#bmText").onclick=async()=>{try{await navigator.clipboard.writeText(buildText($("#bm")._b,$("#bm").dataset.player));toast(L("Build copié en texte","Build copied as text"));}catch(e){blocked();}};
-$("#copyBuilds").onclick=async()=>{ensureBuilds();const lines=[];(FLEX?["blue"]:["blue","red"]).forEach(t=>{if(!FLEX)lines.push(t==="blue"?L("Équipe bleue","Blue team"):L("Équipe rouge","Red team"));T[t].forEach(s=>{if(s.champ)lines.push(`${pname(s.pi)} (${lane(s)}, ${label(s.champ)}) : ${linkFor(s.build,pname(s.pi))}`);});lines.push("");});
-  try{await navigator.clipboard.writeText(lines.join("\n").trim());toast(L("Liens des builds copiés","Build links copied"));}catch(e){blocked();}};
+$("#bmLink").onclick=()=>copy(linkFor($("#bm")._b,$("#bm").dataset.player),L("Lien du build copié","Build link copied"));
+$("#bmText").onclick=()=>copy(buildText($("#bm")._b,$("#bm").dataset.player),L("Build copié en texte","Build copied as text"));
+$("#copyBuilds").onclick=()=>{if(![...T.blue,...T.red].some(s=>s.champ)){toast(L("Tire d'abord les champions","Draw the champions first"));return;}ensureBuilds();const lines=[];(FLEX?["blue"]:["blue","red"]).forEach(t=>{if(!FLEX)lines.push(t==="blue"?L("Équipe bleue","Blue team"):L("Équipe rouge","Red team"));T[t].forEach(s=>{if(s.champ)lines.push(`${pname(s.pi)} (${lane(s)}, ${label(s.champ)}) : ${linkFor(s.build,pname(s.pi))}`);});lines.push("");});
+  copy(lines.join("\n").trim(),L("Liens des builds copiés","Build links copied"));};
 function syncBuildUI(){$("#copyBuilds").hidden=!buildOn();$("#oBuildAdapt").closest("label").hidden=!buildOn();}
 $("#oBuild").addEventListener("change",()=>{syncBuildUI();render5();});
 $("#oBuildAdapt").addEventListener("change",()=>{[...T.blue,...T.red].forEach(s=>s.build=null);render5();});

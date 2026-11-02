@@ -323,6 +323,31 @@ const { chromium } = require('playwright');
   if (!one.fits || !one.reroll || !one.changed || !one.open || !one.link) fail('build du champion seul : ' + JSON.stringify(one));
   await page.click('#bmClose');
 
+  // copying build links in flex: nothing to copy is reported, a refused clipboard falls back
+  await page.click('[data-tab="flex"]');
+  await page.check('#oBuild');
+  await page.evaluate(() => { [...T.blue, ...T.red].forEach(s => { s.champ = null; }); window.copied = null; navigator.clipboard.writeText = t => { window.copied = t; return Promise.resolve(); }; });
+  await page.click('#copyBuilds');
+  const empty = await page.evaluate(() => [window.copied, $('#toast').textContent].join('|'));
+  if (empty !== '|Tire d\u2019abord les champions'.replace('\u2019', "'")) fail('copie sans champion : ' + empty);
+  await page.click('#drawRest');
+  await page.waitForFunction(() => !busy);
+  await page.click('#copyBuilds');
+  await page.waitForTimeout(50);
+  const flexLinks = await page.evaluate(() => window.copied || '');
+  if ((flexLinks.match(/#build-/g) || []).length !== 5) fail('liens flex : ' + flexLinks);
+  await page.evaluate(() => { navigator.clipboard.writeText = () => Promise.reject(new Error('refusé')); window.__ex = 0; document.execCommand = c => { window.__ex++; return c === 'copy'; }; });
+  await page.click('#copyBuilds');
+  await page.waitForTimeout(50);
+  const fb = await page.evaluate(() => [window.__ex, $('#toast').textContent].join('|'));
+  if (fb !== '1|Liens des builds copiés') fail('solution de secours : ' + fb);
+  await page.click('.act.build >> nth=0');
+  await page.click('#bmLink');
+  await page.waitForTimeout(50);
+  if (!/Lien du build copié/.test(await page.evaluate(() => $('#toast').textContent))) fail('copie du lien depuis le build');
+  await page.click('#bmClose');
+  await page.click('[data-tab="team"]');
+
   if (errors.length) fail('erreurs JavaScript : ' + errors.join(' | '));
   console.log(process.exitCode ? 'Des tests ont échoué.' : 'Tous les tests passent.');
   await browser.close();

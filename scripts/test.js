@@ -180,6 +180,16 @@ const { chromium } = require('playwright');
   const rrAfter = await page.evaluate(() => ({ same: JSON.stringify([T.blue.map(s => s.champ), T.red[0].champ]), full: T.red.every(s => s.champ) }));
   if (rrAfter.same !== rrBefore || !rrAfter.full) fail('relance d\'une seule équipe');
   await page.evaluate(() => { T.red[0].locked = false; updateNext(); });
+  // champions face to face: each red champion shares a class with the blue one in its role
+  for (const m of ['cls', 'prof']) {
+    await page.selectOption('#oMirror', m);
+    await page.click('#clearChamps');
+    await page.click('#drawRest');
+    await page.waitForFunction(() => !busy);
+    const ok = await page.evaluate(m => T.red.every((s, i) => MIRROR[m](BY[s.champ], BY[T.blue[i].champ])), m);
+    if (!ok) fail('champions face à face : ' + m);
+  }
+  await page.selectOption('#oMirror', 'off');
   const frBefore = await page.locator('.teams').innerText();
   await page.click('#lang [data-l="en"]');
   const FRENCH = /[éèêàçùîôœ«»]|\b(le|la|les|des|du|une|un|et|ou|pour|joueur|joueurs|équipe|poste|tirer|tirage|proies?)\b/i;

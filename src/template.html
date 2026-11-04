@@ -376,6 +376,9 @@ kbd{border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;paddi
           <label class="check" style="grid-column:1/-1;flex-wrap:wrap">Possible champions for a role:
             <select id="oPool" style="background:var(--slab2);border:1px solid var(--line);border-radius:8px;padding:5px 8px"><option value="role">Those who play this role</option><option value="main">Main role only</option><option value="any">All champions, whatever the role</option></select></label>
           <p class="hint" id="roleCounts" style="grid-column:1/-1;margin:0 0 6px"></p>
+          <label class="check nf" style="grid-column:1/-1;flex-wrap:wrap">Champions face to face:
+            <select id="oMirror" style="background:var(--slab2);border:1px solid var(--line);border-radius:8px;padding:5px 8px"><option value="off">Any match-up</option><option value="cls">Same class (mage against mage)</option><option value="prof">Same profile: tanky or squishy</option><option value="dmg">Same damage type (AD or AP)</option><option value="range">Same range (melee or ranged)</option></select></label>
+          <p class="hint nf" style="grid-column:1/-1;margin:0 0 6px">The second champion drawn in each role takes the type of the one facing it.</p>
           <label class="check nf"><input type="checkbox" id="oUnique" checked> No duplicates across teams</label>
           <label class="check nf"><input type="checkbox" id="oAutoPick" checked> Suggest counters before each draw</label>
           <label class="check"><input type="checkbox" id="oBuild"> Also draw a build and runes</label>
@@ -463,6 +466,7 @@ kbd{border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;paddi
     <details id="faq-names"><summary><h3>Do I have to enter ten names?</h3></summary><p>No. Empty names stay as Player 1, Player 2 and so on, and every draw still works.</p></details>
     <details id="faq-balance"><summary><h3>How are teams balanced?</h3></summary><p>Each division adds about 10% to a player's weight, so high ranks count for much more. The site compares the 252 possible 5v5 splits, keeps the closest ones and picks one at random.</p></details>
     <details id="faq-pairs"><summary><h3>Can I keep two players on different teams?</h3></summary><p>Yes. Add the pair in "Players to put on different teams", and every team shuffle will respect it.</p></details>
+    <details id="faq-mirror"><summary><h3>Can both champions of a role be the same type?</h3></summary><p>Yes. In "Champions face to face", choose a class, a profile (tanky or squishy), a damage type or a range. The second champion drawn in each role then matches the one facing it. If no champion of that role fits, the draw looks among the other roles.</p></details>
     <details id="faq-force"><summary><h3>Can I force a role or a champion on a player?</h3></summary><p>Yes. "Player role" keeps someone in a role on every shuffle. Champion role, class, damage, range and difficulty limit the champions they can get. You can tick several options, and discreet mode hides it all from their line.</p></details>
     <details id="faq-flex"><summary><h3>How does Flex 5 work?</h3></summary><p>Flex 5 is for a stack of five with no opposing team. Each player gets a role and a champion. Switching between 5v5 and Flex 5 clears the current draw.</p></details>
     <details id="faq-counters"><summary><h3>What are counters and preys?</h3></summary><p>A counter is a champion that beats the one facing it. A prey is a champion it beats. The numbers are LoLalytics matchups in Emerald and above, between players of the same role.</p></details>
@@ -534,6 +538,15 @@ const STATIC_FR={"Within a champion category, one match is enough (Tank or Suppo
   "Draw a build":"Tirer un build",
   "Reroll the build":"Relancer le build",
   "Reroll this team":"Relancer l'équipe",
+  "Champions face to face:":"Champions face à face :",
+  "Any match-up":"N'importe lesquels",
+  "Same class (mage against mage)":"Même classe (mage contre mage)",
+  "Same profile: tanky or squishy":"Même gabarit : tanky ou squishy",
+  "Same damage type (AD or AP)":"Même type de dégâts (AD ou AP)",
+  "Same range (melee or ranged)":"Même portée (mêlée ou distance)",
+  "The second champion drawn in each role takes the type of the one facing it.":"Le second champion tiré sur chaque poste reprend le type de celui d'en face.",
+  "Can both champions of a role be the same type?":"Les deux champions d'un poste peuvent-ils être du même type ?",
+  "Yes. In \"Champions face to face\", choose a class, a profile (tanky or squishy), a damage type or a range. The second champion drawn in each role then matches the one facing it. If no champion of that role fits, the draw looks among the other roles.":"Oui. Dans « Champions face à face », choisis une classe, un gabarit (tanky ou squishy), un type de dégâts ou une portée. Le second champion tiré sur chaque poste correspond alors à celui d'en face. Si aucun champion de ce poste ne convient, le tirage cherche parmi les autres postes.",
   "Recent draws":"Derniers tirages",
   "Draw a counter":"Tirer un counter",
   "Player role":"Poste du joueur",
@@ -956,7 +969,15 @@ $("#shuffleTeams").onclick=()=>shuffleAnim(false);
 $("#shuffleRoles").onclick=()=>shuffleAnim(true);
 
 function usedNames(except){const s=new Set();["blue","red"].forEach(t=>T[t].forEach(sl=>{if(sl.champ&&sl!==except)s.add(sl.champ);}));return s;}
-function candidates(slot,team,raw){
+// "champions face to face": the champion facing an already drawn one must share its type
+const tanky=c=>["Tank","Fighter"].includes(c.c[0]);
+const MIRROR={cls:(a,b)=>a.c.some(x=>b.c.includes(x)),prof:(a,b)=>tanky(a)===tanky(b),dmg:(a,b)=>a.d===b.d,range:(a,b)=>a.rg===b.rg||a.rg==="Both"||b.rg==="Both"};
+function mirrorFit(t,i){const m=$("#oMirror").value,o=!FLEX&&MIRROR[m]&&T[other(t)][i].champ;return o?c=>MIRROR[m](c,BY[o]):null;}
+function candidates(slot,team,raw,noMirror){
+  if(!raw&&!noMirror){const mf=mirrorFit(team,T[team].indexOf(slot));if(mf){const c=candidates(slot,team,false,true),m=c.filter(mf);if(m.length)return m;
+    // nobody of that type plays this role: look in the whole pool before giving up the setting
+    const used=usedNames(slot),mine=new Set(T[team].filter(s=>s!==slot&&s.champ).map(s=>s.champ));
+    const w=pool({ignoreRole:true}).filter(x=>mf(x)&&(!forced[slot.pi]||fcFits(x,slot.pi))&&!mine.has(x.n)&&!($("#oUnique").checked&&used.has(x.n)));return w.length?w:c;}}
   const fr=!raw&&(forced[slot.pi]||[]).some(v=>v.startsWith("role|")); // a forced role replaces the player's lane
   const pm=F.mode==="aram"||fr?"any":$("#oPool").value,strict=pm!=="any",used=usedNames(slot),unique=$("#oUnique").checked;
   const mine=new Set(T[team].filter(s=>s!==slot&&s.champ).map(s=>s.champ));
@@ -976,9 +997,9 @@ function options(t,i,mode){
   const src=T[other(t)][i].champ;if(!src)return [];
   const on=F.mode==="aram"?null:T[t][i].role;
   const list=mode==="counter"?losesTo(src,on):beats(src,on);
-  const slot=T[t][i],used=usedNames(slot),unique=$("#oUnique").checked,mine=new Set(T[t].filter(s=>s!==slot&&s.champ).map(s=>s.champ));
+  const slot=T[t][i],used=usedNames(slot),unique=$("#oUnique").checked,mine=new Set(T[t].filter(s=>s!==slot&&s.champ).map(s=>s.champ)),mf=mirrorFit(t,i);
   return list.filter(([n])=>fcFits(BY[n],slot.pi)).map(([n,w])=>{const c=BY[n];let why="";
-    if(mine.has(n)||(unique&&used.has(n)))why=L("déjà pris","already taken");else if(excluded.has(n))why=L("hors pool","not in pool");
+    if(mine.has(n)||(unique&&used.has(n)))why=L("déjà pris","already taken");else if(excluded.has(n))why=L("hors pool","not in pool");else if(mf&&!mf(c))why=L("autre type","other type");
     const off=F.mode!=="aram"&&!c.r.includes(slot.role);
     return {n,w,why,off};});
 }
@@ -1070,10 +1091,10 @@ document.querySelector(".teams").addEventListener("click",async e=>{
   pk={t:ot,i,mode:a,manual:true};renderPicker();$("#picker").scrollIntoView({block:"nearest",behavior:"smooth"});
 });
 $("#copyTeam").onclick=()=>{const line=t=>T[t].map(s=>`${F.mode==="aram"?"":ROLE_LBL[s.role]+" : "}${pname(s.pi)}, ${s.champ?label(s.champ):"?"}`).join("\n");copy(FLEX?line("blue"):`${L("Équipe bleue","Blue team")}\n${line("blue")}\n\n${L("Équipe rouge","Red team")}\n${line("red")}`,L("Équipes copiées","Teams copied"));};
-["oAutoPick","oUnique","oPool"].forEach(id=>$("#"+id).addEventListener("change",()=>{showRoleCounts();updateNext();}));
+["oAutoPick","oUnique","oPool","oMirror"].forEach(id=>$("#"+id).addEventListener("change",()=>{showRoleCounts();updateNext();}));
 const OPT_IDS=["oAutoPick","oUnique","oBalance","oDuel","oBuild","oBuildAdapt","oForceHide","sound","cUseFilters"],savedOpts=store.get("opts",{});
 $("#oForceHide").addEventListener("change",()=>render5());
-["oPool","speed"].forEach(id=>{const v=store.get(id,null);if(v!=null)$("#"+id).value=v;$("#"+id).addEventListener("change",e=>store.set(id,e.target.value));});
+["oPool","oMirror","speed"].forEach(id=>{const v=store.get(id,null);if(v!=null)$("#"+id).value=v;$("#"+id).addEventListener("change",e=>store.set(id,e.target.value));});
 OPT_IDS.forEach(id=>{if(id in savedOpts)$("#"+id).checked=savedOpts[id];$("#"+id).addEventListener("change",()=>{store.set("opts",Object.fromEntries(OPT_IDS.map(k=>[k,$("#"+k).checked])));renderBoard();});});
 function showRoleCounts(){const pm=$("#oPool").value,p=pool({ignoreRole:true});
   $("#roleCounts").textContent=pm==="any"?L(`Chaque poste peut tomber sur n'importe lequel des ${p.length} champions du pool.`,`Each role can land on any of the ${p.length} champions in the pool.`):L("Champions possibles par poste : ","Possible champions per role: ")+ROLES.map(([r,l])=>`${l} ${p.filter(c=>pm==="main"?c.r[0]===r:c.r.includes(r)).length}`).join(", ")+".";}
